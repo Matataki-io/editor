@@ -142,9 +142,9 @@ export default {
     methods: {
         async imageUploadFn(file) {
            try {
-            const res = await uploadImage(file, 'https://apitest.smartsignature.io/oss/uploadImage?folder=article', {
+            const res = await uploadImage(file, 'https://apitest.mttk.net/oss/uploadImage?folder=article', {
                 key: 'x-access-token',
-                value: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5NTI4MjIzOTlAcXEuY29tIiwiZXhwIjoxNTg4MjI5NTI1NTcwLCJwbGF0Zm9ybSI6ImVtYWlsIiwiaWQiOjEwNTN9.GuZjE7JfnqODw5caehhIoZG4-af3g1WBaoEm9FzXJOo'
+                value: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5NTI4MjIzOTlAcXEuY29tIiwiZXhwIjoxNTkxMDk2NzUxNTg5LCJwbGF0Zm9ybSI6ImVtYWlsIiwiaWQiOjEwNTN9.CcALgVe9F0USkOM_hz3qEn6aYer1V14BcQyLBo-mdco'
             })
             if (res.status === 200 && res.data.code === 0) {
                 return 'https://ssimg.frontenduse.top' + res.data.data
