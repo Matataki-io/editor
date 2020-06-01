@@ -20858,8 +20858,8 @@ var isMac = true;
 
                 otherCursors: true,
                 scrollbarStyle: 'overlay',
-                placeholder: '在此输入内容\n\n现在就开始编辑吧！',
-                extraKeys: { Ctrl: "autocomplete" } },
+                placeholder: '在此输入内容\n\n现在就开始编辑吧！'
+            },
 
             scrollSwitchLeft: false,
             scrollSwitchTimerLeft: null,
