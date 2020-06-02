@@ -75,6 +75,7 @@
                         @toolbar_click="toolbar_left_click"
                         @toolbar_toggle_click="toolbar_toggle_click"
                         @read_tags_display_mode="read_tags_mode_click"
+                        @tool-mobile-import="$emit('tool-mobile-import')"
                         >
                         <slot name="tool-mobile" />
                     </v-md-toolbar-mobile>

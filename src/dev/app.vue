@@ -18,6 +18,7 @@
         @imgDel="$imgDel"
         @subfieldtoggle="$subfieldtoggle"
         @previewtoggle="$previewtoggle"
+        @tool-mobile-import="toolMobileImport"
         :imageFilter="image_filter"
         :scrollStyle="true"
         :transition="true"
@@ -26,8 +27,13 @@
         :encryption="encryption"
         :placeholder="placeholder"
       >
-        <button slot="tool-mobile">内容</button>
-        <button slot="tool-view-mobile">内容</button>
+        <template slot="tool-mobile">
+          <button>内容</button>
+        </template>
+  
+        <template slot="tool-view-mobile">
+          <button>内容</button>
+        </template>
       </mavon-editor>
   </div>
 </template>
@@ -240,6 +246,9 @@ export default {
       var md = this.$refs.md;
       var toolbar_left = md.$refs.toolbar_left;
       toolbar_left.$imgDelByFilename(this.imgName);
+    },
+    toolMobileImport() {
+      console.log(111)
     }
   },
   watch: {
