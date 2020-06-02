@@ -5,9 +5,10 @@
   padding: 0 20px
 
 .edit-toolbar
-  height: 41px
+  height: 40px
+  box-sizing: border-box;
 .edit-content
-  height: calc(100% - 41px - 26px);
+  height: calc(100% - 40px - 26px);
   position: relative
 
 .status-bar
@@ -44,3 +45,36 @@
     cursor pointer
     color #ccc
     font-size: 16px
+
+.tool-mobile
+  position: relative;
+  background: #1c1c1e;
+  border-top: 1px solid #343434;
+  color: #ccc;
+  display: none;
+  box-sizing: border-box;
+  font-size: 11px;
+  line-height: 40px;
+  height: 40px;
+
+.tool-view-mobile
+  position: relative;
+  background: #ffffff;
+  border-top: 1px solid #eaeaea;
+  color: #333;
+  display: none;
+  box-sizing: border-box;
+  font-size: 11px;
+  line-height: 40px;
+  height: 40px;
+
+@media only screen and (max-width 768px)
+  .tool-mobile
+  .tool-view-mobile
+    display block !important;
+  .edit-toolbar
+  .status-bar
+    display none !important
+  .edit-content
+  .v-show-content
+    height: calc(100% - 40px) !important;
