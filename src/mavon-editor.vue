@@ -1368,6 +1368,23 @@ export default {
           this.d_history = [this.d_value] // 编辑记录
           this.d_history_index = 0 // 编辑记录索引
         },
+        // 添加padding
+        setCodeMirrorLineStyle() {
+          try {
+            let editor = this.codemirror
+            let countLine = editor.lineCount()
+            let dom = document.querySelector('.CodeMirror-lines')
+            let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+
+            if (countLine > 1) {
+              dom.style.paddingBottom =  clientHeight - 88 + 'px';
+            } else {
+              dom.style.paddingBottom = '0px'
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        },
         // 更新 status
         updateStatusBar () {
           let editor = this.codemirror
@@ -1432,11 +1449,13 @@ export default {
         },
         onChanges(cm) {
           this.updateStatusBar()
+          this.setCodeMirrorLineStyle()
           // 锁定 scrollSwitch
           this.scrollSwitch = true
         },
         onReady(cm) {
           this.bindScroll()
+          this.setCodeMirrorLineStyle()
           window.cm = cm
         }
   },
