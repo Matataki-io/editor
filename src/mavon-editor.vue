@@ -1374,7 +1374,8 @@ export default {
             let editor = this.codemirror
             let countLine = editor.lineCount()
             let dom = document.querySelector('.CodeMirror-lines')
-            let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+            let wrapper = document.querySelector('.v-note-wrapper')
+            let clientHeight = wrapper.clientHeight || wrapper.offsetHeight
 
             if (countLine > 1) {
               dom.style.paddingBottom =  clientHeight - 88 + 'px';
