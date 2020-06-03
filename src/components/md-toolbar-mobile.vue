@@ -180,13 +180,16 @@ export default {
 
       let files = [...$e.target.files]
 
+      // console.log('files', files)
+
+      // 移动端修改这个会 bug  safari刷新 chrome崩溃
       // hack file 无法选择同一文件bug
-      document.querySelector('#_toolbar-file__mobile').setAttribute("type", "text");
+      // document.querySelector('#_toolbar-file__mobile').setAttribute("type", "text");
 
       this.$emit('imageMultipleUpload', files)
 
       // hack file 无法选择同一文件bug
-      document.querySelector('#_toolbar-file__mobile').setAttribute("type", "file");
+      // document.querySelector('#_toolbar-file__mobile').setAttribute("type", "file");
     },
     // 图片图片上传
     defaultImageUpload() {

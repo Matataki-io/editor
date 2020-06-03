@@ -792,6 +792,9 @@ export default {
         // files array
         async imageMultipleUpload(files) {
           if (!files || !files.length) return;
+          if (files.length > 5) {
+            return alert('一次最多上传五张图片')
+          }
 
           // 替换元素的内容
           let replacementsArray = []
