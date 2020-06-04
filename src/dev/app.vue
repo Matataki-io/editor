@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div style="height: 60px;"></div>
+    <!-- <div style="height: 60px;"></div> -->
       <mavon-editor
         ref="md"
         :subfield="subfield"
@@ -146,7 +146,8 @@ export default {
     // console.log(toolbar_left)
 
     const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
-    document.querySelector('.item-editor').style.height = clientHeight - 60 + 'px'
+    // document.querySelector('.item-editor').style.height = clientHeight - 60 + 'px'
+    document.querySelector('.item-editor').style.height = clientHeight + 'px'
   },
   methods: {
     async imageUploadFn(file) {

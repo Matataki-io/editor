@@ -96,6 +96,7 @@
                 <!-- <div v-show="s_html_code" :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" class="v-show-content-html spoiler">{{d_render}}</div> -->
                 <div class="tool-view-mobile">
                     <v-md-toolbar-view-mobile
+                        @read_tags_display_mode="read_tags_mode_click"
                         @toolbar_toggle_click="toolbar_toggle_click"
                     >
                         <slot name="tool-view-mobile" />
@@ -1376,9 +1377,11 @@ export default {
             let dom = document.querySelector('.CodeMirror-lines')
             let wrapper = document.querySelector('.v-note-wrapper')
             let clientHeight = wrapper.clientHeight || wrapper.offsetHeight
+            let clientWidth = wrapper.clientWidth || wrapper.offsetWidth
 
             if (countLine > 1) {
-              dom.style.paddingBottom =  clientHeight - 88 + 'px';
+              // 如果小屏幕  62(40 + 22) 大屏幕 88 (40 + 26 + 22)
+              dom.style.paddingBottom =  clientHeight - (clientWidth < 768 ? 62 : 88) + 'px';
             } else {
               dom.style.paddingBottom = '0px'
             }
@@ -1524,6 +1527,13 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,
     Segoe UI, Arial, Roboto, PingFang SC, Hiragino Sans GB, Microsoft Yahei,
     sans-serif;
+}
+
+@media screen and (max-width: 768px){
+  .codemirror-editor /deep/ .CodeMirror {
+    line-height: 22px;
+    font-size: 16px;
+  }
 }
 </style>
 <style lang="css">
