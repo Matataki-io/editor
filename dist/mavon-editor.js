@@ -20414,6 +20414,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       default: true
     }
   },
+  data: function data() {
+    return {
+      read_tags_display_mode: 0
+    };
+  },
+
+  watch: {
+    read_tags_display_mode: function read_tags_display_mode(newVal) {
+      this.$emit('read_tags_display_mode', newVal);
+    }
+  },
   methods: {
     $clickToggle: function $clickToggle(_type) {
       if (this.editable) {
@@ -22016,9 +22027,10 @@ var isMac = true;
         var dom = document.querySelector('.CodeMirror-lines');
         var wrapper = document.querySelector('.v-note-wrapper');
         var clientHeight = wrapper.clientHeight || wrapper.offsetHeight;
+        var clientWidth = wrapper.clientWidth || wrapper.offsetWidth;
 
         if (countLine > 1) {
-          dom.style.paddingBottom = clientHeight - 88 + 'px';
+          dom.style.paddingBottom = clientHeight - (clientWidth < 768 ? 62 : 88) + 'px';
         } else {
           dom.style.paddingBottom = '0px';
         }
@@ -29092,7 +29104,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\n.tool[data-v-4d09e348] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n  -webkit-justify-content: space-between;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.tool[data-v-4d09e348]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.tool-3[data-v-4d09e348] {\n  width: 30%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-4[data-v-4d09e348] {\n  width: 40%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-item .item[data-v-4d09e348] {\n  width: 50%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item-btn[data-v-4d09e348] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.tool-item .item-btn .icon[data-v-4d09e348] {\n  fill: #b2b2b2;\n  width: 1em;\n  height: 1em;\n  font-size: 18px;\n}\n.tool-item .item-btn .icon.toggle-lock[data-v-4d09e348] {\n  font-size: 38px;\n}\n.tool-item[data-v-4d09e348]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n", ""]);
+exports.push([module.i, "\n.tool[data-v-4d09e348] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n  -webkit-justify-content: space-between;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.tool[data-v-4d09e348]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.tool-3[data-v-4d09e348] {\n  width: 30%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-4[data-v-4d09e348] {\n  width: 40%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-item .item[data-v-4d09e348] {\n  width: 50%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item-btn[data-v-4d09e348] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.tool-item .item-btn .icon[data-v-4d09e348] {\n  fill: #cdcdcd;\n  width: 1em;\n  height: 1em;\n  font-size: 16px;\n}\n.tool-item .item-btn .icon.toggle-lock[data-v-4d09e348] {\n  font-size: 36px;\n}\n.tool-item[data-v-4d09e348]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n", ""]);
 
 // exports
 
@@ -29106,7 +29118,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\n.tool[data-v-553caa00] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n  -webkit-justify-content: space-between;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.tool[data-v-553caa00]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.tool-3[data-v-553caa00] {\n  width: 30%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-4[data-v-553caa00] {\n  width: 40%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-item .item-edit[data-v-553caa00] {\n  width: 33.33%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item[data-v-553caa00] {\n  width: 50%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item-btn[data-v-553caa00] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.tool-item .item-btn .icon[data-v-553caa00] {\n  fill: #fff;\n  width: 1em;\n  height: 1em;\n  font-size: 18px;\n}\n.tool-item .item-btn .icon.toggle-lock[data-v-553caa00] {\n  font-size: 38px;\n}\n.tool-item[data-v-553caa00]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.image-upload[data-v-553caa00] {\n  overflow: hidden;\n  position: relative;\n  cursor: pointer;\n}\n.image-file[data-v-553caa00] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  opacity: 0;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.tool[data-v-553caa00] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n  -webkit-justify-content: space-between;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.tool[data-v-553caa00]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.tool-3[data-v-553caa00] {\n  width: 30%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-4[data-v-553caa00] {\n  width: 40%;\n  float: left;\n  box-sizing: border-box;\n}\n.tool-item .item-edit[data-v-553caa00] {\n  width: 33.33%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item[data-v-553caa00] {\n  width: 50%;\n  height: 39px;\n  float: left;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n}\n.tool-item .item-btn[data-v-553caa00] {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.tool-item .item-btn .icon[data-v-553caa00] {\n  fill: #cdcdcd;\n  width: 1em;\n  height: 1em;\n  font-size: 16px;\n}\n.tool-item .item-btn .icon.toggle-lock[data-v-553caa00] {\n  font-size: 36px;\n}\n.tool-item[data-v-553caa00]::after {\n  content: '';\n  display: block;\n  width: 0;\n  height: 0;\n  clear: both;\n}\n.image-upload[data-v-553caa00] {\n  overflow: hidden;\n  position: relative;\n  cursor: pointer;\n}\n.image-file[data-v-553caa00] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  opacity: 0;\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -29134,7 +29146,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -29148,7 +29160,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
 
 // exports
 
@@ -29176,7 +29188,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\n.auto-textarea-wrapper[data-v-69290688] {\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] {\n  width: 100%;\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] .CodeMirror {\n  letter-spacing: 0.025em;\n  line-height: 1.25;\n  font-size: 18px;\n  height: 100%;\n  overflow-y: hidden !important;\n  -webkit-overflow-scrolling: touch;\n  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,\n    Segoe UI, Arial, Roboto, PingFang SC, Hiragino Sans GB, Microsoft Yahei,\n    sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n.auto-textarea-wrapper[data-v-69290688] {\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] {\n  width: 100%;\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] .CodeMirror {\n  letter-spacing: 0.025em;\n  line-height: 1.25;\n  font-size: 18px;\n  height: 100%;\n  overflow-y: hidden !important;\n  -webkit-overflow-scrolling: touch;\n  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,\n    Segoe UI, Arial, Roboto, PingFang SC, Hiragino Sans GB, Microsoft Yahei,\n    sans-serif;\n}\n@media screen and (max-width: 768px){\n.codemirror-editor[data-v-69290688] .CodeMirror {\n    line-height: 22px;\n    font-size: 16px;\n}\n}\n", ""]);
 
 // exports
 
@@ -44718,7 +44730,126 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "tool-3 tool-item"
   }, [_c('div', {
     staticClass: "item"
-  }), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "item-btn",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.read_tags_display_mode = (_vm.read_tags_display_mode + 1) % 3
+      }
+    }
+  }, [_c('svg', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.read_tags_display_mode === 0),
+      expression: "read_tags_display_mode === 0"
+    }],
+    staticClass: "icon toggle-lock",
+    attrs: {
+      "width": "32",
+      "height": "16",
+      "viewBox": "0 0 64 32",
+      "version": "1.1",
+      "xmlns": "http://www.w3.org/2000/svg"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
+      "fill": "#CDCDCD",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
+      "fill": "#CDCDCD",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('rect', {
+    attrs: {
+      "fill": "#B2B2B2",
+      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
+      "x": "28",
+      "y": "5",
+      "width": "2",
+      "height": "23",
+      "rx": "1"
+    }
+  })]), _vm._v(" "), _c('svg', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.read_tags_display_mode === 1),
+      expression: "read_tags_display_mode === 1"
+    }],
+    staticClass: "icon toggle-lock",
+    attrs: {
+      "width": "32",
+      "height": "16",
+      "viewBox": "0 0 64 32",
+      "version": "1.1",
+      "xmlns": "http://www.w3.org/2000/svg"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
+      "fill": "#CDCDCD",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
+      "fill": "#8a8a8a",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('rect', {
+    attrs: {
+      "fill": "#B2B2B2",
+      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
+      "x": "28",
+      "y": "5",
+      "width": "2",
+      "height": "23",
+      "rx": "1"
+    }
+  })]), _vm._v(" "), _c('svg', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.read_tags_display_mode === 2),
+      expression: "read_tags_display_mode === 2"
+    }],
+    staticClass: "icon toggle-lock",
+    attrs: {
+      "width": "32",
+      "height": "16",
+      "viewBox": "0 0 64 32",
+      "version": "1.1",
+      "xmlns": "http://www.w3.org/2000/svg"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
+      "fill": "#8a8a8a",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
+      "fill": "#CDCDCD",
+      "fill-rule": "nonzero"
+    }
+  }), _vm._v(" "), _c('rect', {
+    attrs: {
+      "fill": "#B2B2B2",
+      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
+      "x": "28",
+      "y": "5",
+      "width": "2",
+      "height": "23",
+      "rx": "1"
+    }
+  })])])]), _vm._v(" "), _c('div', {
     staticClass: "item"
   }, [_c('div', {
     staticClass: "item-btn",
@@ -44772,6 +44903,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "tool-3 tool-item"
   }, [_c('div', {
+    staticClass: "item-edit"
+  }, [_c('div', {
+    staticClass: "item-btn",
+    on: {
+      "click": function($event) {
+        _vm.$emit('tool-mobile-import')
+      }
+    }
+  }, [_c('svg', {
+    attrs: {
+      "width": "13px",
+      "height": "14px",
+      "viewBox": "0 0 13 14",
+      "version": "1.1",
+      "xmlns": "http://www.w3.org/2000/svg",
+      "xmlns:xlink": "http://www.w3.org/1999/xlink"
+    }
+  }, [_c('g', {
+    attrs: {
+      "stroke": "none",
+      "stroke-width": "1",
+      "fill": "none",
+      "fill-rule": "evenodd"
+    }
+  }, [_c('g', {
+    attrs: {
+      "transform": "translate(-20.000000, -785.000000)",
+      "fill": "#CDCDCD",
+      "fill-rule": "nonzero"
+    }
+  }, [_c('g', {
+    attrs: {
+      "transform": "translate(20.000000, 785.000000)"
+    }
+  }, [_c('polygon', {
+    attrs: {
+      "points": "10.1869688 13.9742716 12.1208029 11.5188029 10.1869688 11.5188029"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "d": "M10.9915312,0.0104831731 L1.14820192,0.0104831731 C0.521483173,0.0104831731 0.0130576923,0.517882212 0.0117283654,1.14460096 L0.0117283654,12.8401538 C0.0130408654,13.4668726 0.521483173,13.9742716 1.14820192,13.9742716 L9.09414423,13.9742716 L9.09414423,10.7703245 C9.09414497,10.6700801 9.13398051,10.5739446 9.20488221,10.5030793 C9.2757506,10.4321823 9.37188414,10.3923476 9.4721274,10.3923413 L12.1207861,10.3923413 L12.1207861,1.14460096 C12.1194736,0.520675481 11.6154736,0.0144543269 10.9915312,0.0104831731 Z M5.94545894,10.8089663 L2.96010457,7.18008706 L4.90397723,7.18008706 C4.90397723,7.18008706 5.30594896,3.87502225 7.57379091,3.02215671 C7.89777917,2.88005062 8.2865575,2.80896635 8.67535481,2.80896635 C7.96258822,3.16432526 7.50898186,4.0171908 7.31463066,4.51461415 C7.17117374,4.85654326 7.01615597,5.0479336 7.01615597,7.18008706 L8.96010457,7.18008706 L5.94545894,10.8089663 Z",
+      "id": "形状"
+    }
+  })])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "item-edit"
   }, [(_vm.toolbars.imagelink) ? _c('div', {
     staticClass: "item-btn image-upload",
@@ -44841,167 +45016,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "d": "M256 448V320a256 256 0 0 1 512 0v128h64a64 64 0 0 1 64 64v448a64 64 0 0 1-64 64H192a64 64 0 0 1-64-64V512a64 64 0 0 1 64-64h64z m224.448 346.688a29.248 29.248 0 0 0-0.448 5.312v64a32 32 0 0 0 64 0v-64a29.248 29.248 0 0 0-0.448-5.312 96 96 0 1 0-63.104 0zM512 192a128 128 0 0 0-128 128v128h256V320a128 128 0 0 0-128-128z",
       "p-id": "1131"
     }
-  })])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "item-edit"
-  }, [_c('div', {
-    staticClass: "item-btn",
-    on: {
-      "click": function($event) {
-        _vm.$emit('tool-mobile-import')
-      }
-    }
-  }, [_c('svg', {
-    staticClass: "icon",
-    attrs: {
-      "t": "1591089217565",
-      "viewBox": "0 0 1024 1024",
-      "version": "1.1",
-      "xmlns": "http://www.w3.org/2000/svg",
-      "p-id": "3500",
-      "width": "200",
-      "height": "200"
-    }
-  }, [_c('path', {
-    attrs: {
-      "d": "M480.1776 722.6464c8.6064 8.6048 19.2016 12.9056 31.7824 12.9056l0.0352 0.0352c12.5888 0 23.1856-4.3008 31.7888-12.9072l223.5568-223.5552c8.6064-9.0784 12.912-19.6736 12.912-31.7888 0-12.3408-4.3712-22.8816-13.1152-31.6208-8.7408-8.7392-19.2784-13.1088-31.6224-13.1088-12.1152 0-22.712 4.3024-31.7872 12.9104l-147.032 147.4016L556.696 64.92c0-12.336-4.3712-22.8752-13.1152-31.6208-8.7408-8.7376-19.2784-13.1072-31.6208-13.1072-12.336 0-22.8736 4.3696-31.6192 13.1072-8.7408 8.7456-13.1088 19.2848-13.1088 31.6208l0 517.9984-147.0384-147.4016c-8.6064-8.608-19.2016-12.9104-31.7888-12.9104-12.8064 0-23.4576 4.2464-31.9536 12.7408-8.4928 8.4928-12.7392 19.1456-12.7392 31.9568 0 12.5824 4.3024 23.1776 12.9088 31.7856L480.1776 722.6464z",
-      "p-id": "3501"
-    }
-  }), _c('path', {
-    attrs: {
-      "d": "M959.0816 646.1264c0.016 0 0.032 0.0016 0.0464 0.0016s0.032-0.0016 0.0496-0.0016L959.0816 646.1264z",
-      "p-id": "3502"
-    }
-  }), _c('path', {
-    attrs: {
-      "d": "M990.7008 659.2384c-8.7248-8.7328-19.2528-13.1008-31.5712-13.1104-12.3152 0.0112-22.8368 4.3776-31.5712 13.1104-8.7408 8.7408-13.1056 19.2816-13.1056 31.6224l0 178.8224c0 12.3408-4.2496 22.8816-12.7408 31.6208-8.5008 8.7408-18.8032 13.1088-30.9184 13.1088L154.3888 914.4128c-12.3408 0-22.8816-4.368-31.6256-13.1088-8.7408-8.7392-13.1088-19.28-13.1088-31.6208L109.6544 690.8608c0-12.3408-4.368-22.8816-13.1088-31.6224-8.744-8.744-19.2832-13.112-31.6192-13.112-12.3424 0-22.8816 4.368-31.6256 13.112-8.7408 8.7408-13.1088 19.2816-13.1088 31.6224l0 178.8224c0 36.5472 13.04 68.2144 39.1312 94.9936 26.7776 26.0896 58.4464 39.1312 94.9936 39.1312l716.4048 0c36.5744 0 68.016-13.1552 94.3248-39.464 25.8432-25.8448 38.7632-57.3968 38.7632-94.6608L1003.8096 690.8608C1003.8096 678.52 999.44 667.9792 990.7008 659.2384z",
-      "p-id": "3503"
-    }
-  })])])])]), _vm._v(" "), _c('div', {
+  })])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "tool-4"
   }, [_vm._t("default")], 2), _vm._v(" "), _c('div', {
     staticClass: "tool-3 tool-item"
   }, [_c('div', {
     staticClass: "item"
-  }, [_c('div', {
-    staticClass: "item-btn",
-    on: {
-      "click": function($event) {
-        $event.stopPropagation();
-        _vm.read_tags_display_mode = (_vm.read_tags_display_mode + 1) % 3
-      }
-    }
-  }, [_c('svg', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.read_tags_display_mode === 0),
-      expression: "read_tags_display_mode === 0"
-    }],
-    staticClass: "icon toggle-lock",
-    attrs: {
-      "width": "32",
-      "height": "16",
-      "viewBox": "0 0 64 32",
-      "version": "1.1",
-      "xmlns": "http://www.w3.org/2000/svg"
-    }
-  }, [_c('path', {
-    attrs: {
-      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
-      "fill": "#FFFFFF",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('path', {
-    attrs: {
-      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
-      "fill": "#FFFFFF",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('rect', {
-    attrs: {
-      "fill": "#B2B2B2",
-      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
-      "x": "28",
-      "y": "5",
-      "width": "2",
-      "height": "23",
-      "rx": "1"
-    }
-  })]), _vm._v(" "), _c('svg', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.read_tags_display_mode === 1),
-      expression: "read_tags_display_mode === 1"
-    }],
-    staticClass: "icon toggle-lock",
-    attrs: {
-      "width": "32",
-      "height": "16",
-      "viewBox": "0 0 64 32",
-      "version": "1.1",
-      "xmlns": "http://www.w3.org/2000/svg"
-    }
-  }, [_c('path', {
-    attrs: {
-      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
-      "fill": "#FFFFFF",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('path', {
-    attrs: {
-      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
-      "fill": "#B2B2B2",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('rect', {
-    attrs: {
-      "fill": "#B2B2B2",
-      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
-      "x": "28",
-      "y": "5",
-      "width": "2",
-      "height": "23",
-      "rx": "1"
-    }
-  })]), _vm._v(" "), _c('svg', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.read_tags_display_mode === 2),
-      expression: "read_tags_display_mode === 2"
-    }],
-    staticClass: "icon toggle-lock",
-    attrs: {
-      "width": "32",
-      "height": "16",
-      "viewBox": "0 0 64 32",
-      "version": "1.1",
-      "xmlns": "http://www.w3.org/2000/svg"
-    }
-  }, [_c('path', {
-    attrs: {
-      "d": "M57.6486032,4 C58.431251,4 59.1853755,4.14703731 59.9109485,4.44097107 C60.6366341,4.734933 61.2806878,5.13910952 61.8432502,5.65350061 C62.4058126,6.16800442 62.8582198,6.76815553 63.2006968,7.45403853 C63.5431457,8.14003422 63.7142857,8.87488267 63.7142857,9.65875295 L63.7142857,13.284396 L60.7547781,13.284396 L60.7547781,10.3447486 C60.7547781,9.31585371 60.4653815,8.5156428 59.886504,7.94394689 C59.3076546,7.37239183 58.5290855,7.08657203 57.5507687,7.08657203 C56.6701738,7.08657203 55.9609159,7.37239183 55.422798,7.94394689 C54.884652,8.51564283 54.6157056,9.31585371 54.6157056,10.3447486 L54.6157056,13.3333333 L51.5338346,13.3333333 L51.5338346,9.65875295 C51.5338346,8.87488267 51.6887439,8.14003419 51.9985625,7.45403853 C52.3083811,6.76815556 52.7364563,6.16800442 53.2827036,5.65350061 C53.8289509,5.13910949 54.4730045,4.734933 55.2148927,4.44097107 C55.956809,4.14703731 56.7680083,4 57.6486032,4 L57.6486032,4 Z M56.9473684,21.0825476 L56.9473684,23.3531617 L56.9473684,24.5940939 C56.9473684,25.0692476 56.8674391,25.5181659 56.7074062,25.9406057 C56.5474023,26.3630456 56.3284466,26.7238442 56.0505391,27.0230319 C55.7726315,27.3223715 55.4442561,27.5599483 55.0652674,27.7359143 C54.6863079,27.9120322 54.2694901,28 53.814727,28 L41.0315894,28 C40.5768263,28 40.1642215,27.9164655 39.7936587,27.7492143 C39.4231831,27.5819935 39.1031463,27.3531618 38.8336355,27.0627192 C38.5642119,26.7722766 38.3578369,26.4334017 38.2147137,26.0462158 C38.0715906,25.6589084 38,25.2453352 38,24.8052836 L38,16.409231 C38,15.9164655 38.1642458,15.5027405 38.4926213,15.1683292 C38.8210258,14.8338875 39.2041983,14.6666667 39.6421388,14.6666667 L55.2800102,14.6666667 C55.751625,14.6666667 56.1473491,14.8338875 56.4673568,15.1683292 C56.7873645,15.5027405 56.9473684,15.9164655 56.9473684,16.409231 L56.9473684,21.0825476 L56.9473684,21.0825476 Z",
-      "fill": "#B2B2B2",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('path', {
-    attrs: {
-      "d": "M9.38132036,4 C10.168896,4 10.9277687,4.14542151 11.6579101,4.43612523 C12.3881648,4.72685681 13.0362737,5.12659183 13.6023781,5.63533028 C14.1684826,6.1441802 14.6237383,6.73773624 14.9683716,7.41608207 C15.3129767,8.09453934 15.4851943,8.82131253 15.4851943,9.59656885 L15.4851943,13.1823697 L12.5070527,13.1823697 L12.5070527,10.2750261 C12.5070527,9.25743774 12.215834,8.46602035 11.6333117,7.90060681 C11.0508176,7.33533257 10.2673465,7.05265366 9.28286987,7.05265366 C8.39673053,7.05265366 7.68300691,7.33533257 7.14150091,7.90060681 C6.59996658,8.46602038 6.32932682,9.25743774 6.32932682,10.2750261 L6.32932682,13.2307692 L3.22805139,13.2307692 L3.22805139,9.59656885 C3.22805139,8.82131253 3.38393607,8.09453931 3.69570539,7.41608207 C4.00747472,6.73773627 4.43824517,6.1441802 4.98793179,5.63533028 C5.53761841,5.12659181 6.18572723,4.72685681 6.93228654,4.43612523 C7.67887415,4.14542151 8.49518103,4 9.38132036,4 L9.38132036,4 Z M18.8571429,21.2953923 L18.8571429,23.4961414 L18.8571429,24.698891 C18.8571429,25.1594246 18.7775942,25.59453 18.6183233,26.0039717 C18.4590813,26.4134134 18.2411683,26.7631105 17.9645841,27.0530925 C17.6879999,27.3432216 17.3611882,27.5734884 16.9840043,27.7440401 C16.6068492,27.9147389 16.1920164,28 15.7394188,28 L3.01715327,28 C2.56455569,28 2.15391566,27.9190358 1.78511746,27.7569308 C1.41640601,27.5948552 1.09789323,27.3730645 0.829665838,27.0915586 C0.561525202,26.8100527 0.356132874,26.4816047 0.213691293,26.1063322 C0.0712497124,25.730942 1.29674049e-13,25.3300941 1.29674049e-13,24.9035825 L1.29674049e-13,16.7658701 C1.29674049e-13,16.2882666 0.163463717,15.8872715 0.49027549,15.5631498 C0.817116171,15.2389987 1.19846404,15.0769231 1.63431907,15.0769231 L17.1977245,15.0769231 C17.6670935,15.0769231 18.0609332,15.2389987 18.379417,15.5631498 C18.6979009,15.8872715 18.8571429,16.2882666 18.8571429,16.7658701 L18.8571429,21.2953923 L18.8571429,21.2953923 Z",
-      "fill": "#FFFFFF",
-      "fill-rule": "nonzero"
-    }
-  }), _vm._v(" "), _c('rect', {
-    attrs: {
-      "fill": "#B2B2B2",
-      "transform": "translate(29.000000, 16.500000) rotate(30.000000) translate(-29.000000, -16.500000) ",
-      "x": "28",
-      "y": "5",
-      "width": "2",
-      "height": "23",
-      "rx": "1"
-    }
-  })])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "item"
   }, [_c('div', {
     staticClass: "item-btn",
@@ -45188,6 +45209,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "tool-view-mobile"
   }, [_c('v-md-toolbar-view-mobile', {
     on: {
+      "read_tags_display_mode": _vm.read_tags_mode_click,
       "toolbar_toggle_click": _vm.toolbar_toggle_click
     }
   }, [_vm._t("tool-view-mobile")], 2)], 1)]), _vm._v(" "), _c('transition', {
