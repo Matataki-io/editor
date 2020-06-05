@@ -1094,7 +1094,7 @@ export default {
             let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
 
             const scrolling = (who) => {
-            // 滚动信息
+              // 滚动信息
               const scrollInfo = this.codemirror.getScrollInfo()
 
               // 设置右侧滚动
@@ -1174,13 +1174,17 @@ export default {
             }
 
             const mainOnscroll = () => {
-            // 重置滚动状态
+              if (this.isMiniScreen()) return
+
+              // 重置滚动状态
               this.scrollSwitch = false
 
               scrolling('main');
             }
 
             const preOnscroll = () => {
+              if (this.isMiniScreen()) return
+
               scrolling('pre');
             }
 
@@ -1391,69 +1395,127 @@ export default {
         },
         // 更新 status
         updateStatusBar () {
-          let editor = this.codemirror
-          let cursor = editor.getCursor()
+          if (this.isMiniScreen()) return
 
-          this.statusBar.line = cursor.line + 1
+          try {
+            let editor = this.codemirror
+            let cursor = editor.getCursor()
 
-          this.statusBar.column = cursor.ch + 1
+            this.statusBar.line = cursor.line + 1
 
-          let select = editor.getSelection()
-          this.statusBar.select = select ? editor.getSelection().split('\n').length : 0
+            this.statusBar.column = cursor.ch + 1
 
-          this.statusBar.count = editor.lineCount()
+            let select = editor.getSelection()
+            this.statusBar.select = select ? editor.getSelection().split('\n').length : 0
+
+            this.statusBar.count = editor.lineCount()
+          } catch (e) {
+            console.log(e)
+          }
+        },
+        // emoji
+        editorEmoji(cm) {
+          if (this.isMiniScreen()) return
+
+          try {
+            // todo 目前只做了 emoji 的 base 等待扩展
+
+            // emoji
+            // console.log(cm)
+            // console.log(cm.getCursor())
+            // console.log(cm.getDoc().getCursor())
+            let cursor = cm.getCursor()
+            let cursorValue = cm.getLine(cursor.line)
+            let cursorValueLen = cursorValue.length
+            let cursorValueText = cursorValue.slice(cursorValueLen - 2)
+
+            // console.log(cursorValue)
+            // console.log(cursorValueText)
+            var options = {
+              hint: function() {
+                return {
+                  from: cm.getDoc().getCursor(),
+                  to: cm.getDoc().getCursor(),
+                  list: [
+                    {
+                      text: 'smile: ',
+                      displayText: '😄 smile'
+                    },
+                    {
+                      text: 'smiley: ',
+                      displayText: '😃 smiley'
+                    }
+                  ]
+                }
+              }
+            }
+
+            // 当前行已经有了:x: / :+空格
+            if (cursorValueText === ': ') {
+              return
+            }
+
+            // 顶头+:  空格+:
+            // x+空格+:
+            if (cursorValue.trim() === ':' || cursorValueText.trim() === ':') {
+              cm.showHint(options)
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        },
+        // 聚焦滚动
+        focusScroll(cm) {
+          if (!this.isMiniScreen()) return
+          try {
+            let cursor = cm.getCursor()
+            let count = cursor.line
+    
+            let len = 0 // 统计高度
+            for (let i = 0; i < count; i++) {
+              len += cm.getLineHandle(i).height
+            }
+            let currentLineHeight = cm.getLineHandle(count).height
+
+            // 如果行高大于 8 行 小于或等于 10 行 8 * 22
+            if (currentLineHeight > 176 && currentLineHeight <= 220) {
+              // 留 两行 当前元素的一半
+              cm.scrollTo(0, len - 44)
+              // 大于 十行
+            } else if (currentLineHeight > 220) {
+              let lineVal = cm.getLine(cursor.line)
+
+              let lineValLen = lineVal.length // 一行多少字
+
+              let lineLine = currentLineHeight / 22 // 一行的一行有多少行
+    
+              let textLineSize = Math.round(lineValLen / lineLine) // 文字平均多少行
+
+              let chInLine = Math.floor(cursor.ch / textLineSize) // 当前ch大约在多少行
+
+              let offsetHeight = chInLine * 22 // 大概的行数高度
+
+              cm.scrollTo(0, len + offsetHeight - 88)
+            } else {
+              // 留空四行 4 * 22
+              cm.scrollTo(0, len - 88)
+            }
+          } catch (e) {
+            console.log(e)
+          }
         },
         onCursorActivity(cm) {
           this.updateStatusBar()
-
-          // todo 目前只做了 emoji 的 base 等待扩展
-
-          // emoji
-          // console.log(cm.getCursor())
-          // console.log(cm.getDoc().getCursor())
-          let cursor = cm.getCursor()
-          let cursorValue = cm.getLine(cursor.line)
-          let cursorValueLen = cursorValue.length
-          let cursorValueText = cursorValue.slice(cursorValueLen - 2)
-
-          // console.log(cursorValue)
-          // console.log(cursorValueText)
-          var options = {
-            hint: function() {
-              return {
-                from: cm.getDoc().getCursor(),
-                to: cm.getDoc().getCursor(),
-                list: [
-                  {
-                    text: 'smile: ',
-                    displayText: '😄 smile'
-                  },
-                  {
-                    text: 'smiley: ',
-                    displayText: '😃 smiley'
-                  }
-                ]
-              }
-            }
-          }
-
-          // 当前行已经有了:x: / :+空格
-          if (cursorValueText === ': ') {
-            return
-          }
-
-          // 顶头+:  空格+:
-          // x+空格+:
-          if (cursorValue.trim() === ':' || cursorValueText.trim() === ':') {
-            cm.showHint(options)
-          }
-    },
+          this.editorEmoji(cm)
+          this.focusScroll(cm)
+        },
         onBeforeSelectionChange(cm) {
           this.updateStatusBar()
         },
         onChanges(cm) {
           this.updateStatusBar()
           this.setCodeMirrorLineStyle()
+          this.focusScroll(cm)
           // 锁定 scrollSwitch
           this.scrollSwitch = true
         },
@@ -1461,6 +1523,16 @@ export default {
           this.bindScroll()
           this.setCodeMirrorLineStyle()
           window.cm = cm
+        },
+        // 如果是小屏幕 768
+        isMiniScreen() {
+          try {
+            let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+            return clientWidth < 768
+          } catch (e) {
+            console.log(e)
+            return false
+          }
         }
   },
   computed: {
