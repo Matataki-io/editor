@@ -22043,6 +22043,7 @@ var isMac = true;
       }
     },
     updateStatusBar: function updateStatusBar() {
+      if (this.isMiniScreen()) return;
 
       try {
         var editor = this.codemirror;
