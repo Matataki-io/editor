@@ -1380,6 +1380,8 @@ export default {
             let countLine = editor.lineCount()
             let dom = document.querySelector('.CodeMirror-lines')
             let wrapper = document.querySelector('.v-note-wrapper')
+            if (!dom || !wrapper) return
+
             let clientHeight = wrapper.clientHeight || wrapper.offsetHeight
             let clientWidth = wrapper.clientWidth || wrapper.offsetWidth
 
