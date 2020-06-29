@@ -89,7 +89,7 @@
                 <div 
                     id="previewContent" 
                     ref="vShowContent" 
-                    v-html="d_render" 
+                    v-html="d_render"
                     v-show="!s_html_code"
                     :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" class="v-show-content markdown-body extmarkdown">
                 </div>
@@ -145,7 +145,8 @@
 </template>
 
 <script>
-    // import tomarkdown from './lib/core/to-markdown.js'
+
+// import tomarkdown from './lib/core/to-markdown.js'
 import {autoTextarea} from 'auto-textarea'
 import {keydownListen} from './lib/core/keydown-listen.js'
 import hljsCss from './lib/core/hljs/lang.hljs.css.js'
@@ -241,1340 +242,1369 @@ import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import anime from 'animejs/lib/anime.es.js';
 
+// import { emojifyImageDir } from './lib/editor/constants'
+import { finishView } from './lib/extra.js'
+
+import {
+  clearMap,
+  setupSyncAreas,
+  syncScrollToEdit,
+  syncScrollToView
+} from './lib/syncscroll'
+
 const isMac = true
 export default {
   mixins: [markdown],
   components: {
-        'v-autoTextarea': autoTextarea,
-        'v-md-toolbar-left': md_toolbar_left,
-        'v-md-toolbar-right': md_toolbar_right,
-        'v-md-toolbar': md_toolbar,
-        'v-md-toolbar-mobile': md_toolbar_mobile,
-        'v-md-toolbar-view-mobile': md_toolbar_view_mobile,
-        'v-md-head-toolbar-right': md_head_toolbar_right,
-        codemirror
+    'v-autoTextarea': autoTextarea,
+    'v-md-toolbar-left': md_toolbar_left,
+    'v-md-toolbar-right': md_toolbar_right,
+    'v-md-toolbar': md_toolbar,
+    'v-md-toolbar-mobile': md_toolbar_mobile,
+    'v-md-toolbar-view-mobile': md_toolbar_view_mobile,
+    'v-md-head-toolbar-right': md_head_toolbar_right,
+    codemirror
   },
   props: {
-        scrollStyle: {  // 是否渲染滚动条样式(webkit)
-          type: Boolean,
-          default: true
-        },
-        boxShadow: { // 是否添加阴影
-          type: Boolean,
-          default: true
-        },
-        transition: { // 是否开启动画过渡
-          type: Boolean,
-          default: true
-        },
-        autofocus: { // 是否自动获取焦点
-          type: Boolean,
-          default: true
-        },
-        fontSize: { // 字体大小
-          type: String,
-          default: '15px'
-        },
-        toolbarsBackground: { // 工具栏背景色
-          type: String,
-          default: '#ffffff'
-        },
-        editorBackground: { // TODO: 编辑栏背景色
-          type: String,
-          default: '#ffffff'
-        },
-        previewBackground: { // 预览栏背景色
-          type: String,
-          default: '#fbfbfb'
-        },
-        boxShadowStyle: { // 阴影样式
-          type: String,
-          default: '0 2px 12px 0 rgba(0, 0, 0, 0.1)'
-        },
-        help: {
-          type: String,
-          default: null
-        },
-        value: { // 初始 value
-          type: String,
-          default: ''
-        },
-        language: {  // 初始语言
-          type: String,
-          default: 'zh-CN'
-        },
-        subfield: {
-          type: Boolean,
-          default: true
-        },
-        navigation: {
-          type: Boolean,
-          default: false
-        },
-        defaultOpen: {
-          type: String,
-          default: null
-        },
-        toolbarsFlag: { // 是否开启工具栏
-          type: Boolean,
-          default: true
-        },
-        toolbars: { // 工具栏
-          type: Object,
-          default() {
-            return CONFIG.toolbars
-          }
-        },
-        codeStyle: { // <code></code> 样式
-          type: String,
-          default() {
-            return 'github';
-          }
-        },
-        placeholder: { // 编辑器默认内容
-          type: String,
-          default: null
-        },
-        ishljs: {
-          type: Boolean,
-          default: true
-        },
-        externalLink: {
-          type: [Object, Boolean],
-          default: true
-        },
-        imageFilter: {
-          type: Function,
-          default: null
-        },
-        imageClick: {
-          type: Function,
-          default: null
-        },
-        tabSize: {
-          type: Number,
-          default: 0
-        },
-        shortCut:{
-          type: Boolean,
-          default: true
-        },
-        // 上传图片动作
-        // default 默认行为是写入markdown标签
-        // customize 根据自定义的路径上传图片
-        imageUploadAction: {
-          type: String,
-          default: 'default'
-          // default: 'customize'
-        },
-        // 图片上传方法
-        imageUploadFn: {
-          type: Function,
-          default: () => {}
-        },
-        // 加密语法内容
-        encryption: {
-          type: String,
-          default: ''
-        }
+    scrollStyle: {  // 是否渲染滚动条样式(webkit)
+      type: Boolean,
+      default: true
+    },
+    boxShadow: { // 是否添加阴影
+      type: Boolean,
+      default: true
+    },
+    transition: { // 是否开启动画过渡
+      type: Boolean,
+      default: true
+    },
+    autofocus: { // 是否自动获取焦点
+      type: Boolean,
+      default: true
+    },
+    fontSize: { // 字体大小
+      type: String,
+      default: '15px'
+    },
+    toolbarsBackground: { // 工具栏背景色
+      type: String,
+      default: '#ffffff'
+    },
+    editorBackground: { // TODO: 编辑栏背景色
+      type: String,
+      default: '#ffffff'
+    },
+    previewBackground: { // 预览栏背景色
+      type: String,
+      default: '#fbfbfb'
+    },
+    boxShadowStyle: { // 阴影样式
+      type: String,
+      default: '0 2px 12px 0 rgba(0, 0, 0, 0.1)'
+    },
+    help: {
+      type: String,
+      default: null
+    },
+    value: { // 初始 value
+      type: String,
+      default: ''
+    },
+    language: {  // 初始语言
+      type: String,
+      default: 'zh-CN'
+    },
+    subfield: {
+      type: Boolean,
+      default: true
+    },
+    navigation: {
+      type: Boolean,
+      default: false
+    },
+    defaultOpen: {
+      type: String,
+      default: null
+    },
+    toolbarsFlag: { // 是否开启工具栏
+      type: Boolean,
+      default: true
+    },
+    toolbars: { // 工具栏
+      type: Object,
+      default() {
+        return CONFIG.toolbars
+      }
+    },
+    codeStyle: { // <code></code> 样式
+      type: String,
+      default() {
+        return 'github';
+      }
+    },
+    placeholder: { // 编辑器默认内容
+      type: String,
+      default: null
+    },
+    ishljs: {
+      type: Boolean,
+      default: true
+    },
+    externalLink: {
+      type: [Object, Boolean],
+      default: true
+    },
+    imageFilter: {
+      type: Function,
+      default: null
+    },
+    imageClick: {
+      type: Function,
+      default: null
+    },
+    tabSize: {
+      type: Number,
+      default: 0
+    },
+    shortCut:{
+      type: Boolean,
+      default: true
+    },
+    // 上传图片动作
+    // default 默认行为是写入markdown标签
+    // customize 根据自定义的路径上传图片
+    imageUploadAction: {
+      type: String,
+      default: 'default'
+      // default: 'customize'
+    },
+    // 图片上传方法
+    imageUploadFn: {
+      type: Function,
+      default: () => {}
+    },
+    // 加密语法内容
+    encryption: {
+      type: String,
+      default: ''
+    }
   },
   data() {
-        this.defaultExtraKeys = {
-          F10: function (cm) {
-            cm.setOption('fullScreen', !cm.getOption('fullScreen'))
-          },
-          'Cmd-S': function () {
-            return false
-          },
-          'Ctrl-S': function () {
-            return false
-          },
-          Enter: 'newlineAndIndentContinueMarkdownList',
-          Tab: function (cm) {
-            var tab = '\t'
+    this.defaultExtraKeys = {
+      F10: function (cm) {
+        cm.setOption('fullScreen', !cm.getOption('fullScreen'))
+      },
+      'Cmd-S': function () {
+        return false
+      },
+      'Ctrl-S': function () {
+        return false
+      },
+      Enter: 'newlineAndIndentContinueMarkdownList',
+      Tab: function (cm) {
+        var tab = '\t'
 
-            // contruct x length spaces
-            var spaces = Array(parseInt(cm.getOption('indentUnit')) + 1).join(' ')
+        // contruct x length spaces
+        var spaces = Array(parseInt(cm.getOption('indentUnit')) + 1).join(' ')
 
-            // auto indent whole line when in list or blockquote
-            var cursor = cm.getCursor()
-            var line = cm.getLine(cursor.line)
+        // auto indent whole line when in list or blockquote
+        var cursor = cm.getCursor()
+        var line = cm.getLine(cursor.line)
 
-            // this regex match the following patterns
-            // 1. blockquote starts with "> " or ">>"
-            // 2. unorder list starts with *+-
-            // 3. order list starts with "1." or "1)"
-            var regex = /^(\s*)(>[> ]*|[*+-]\s|(\d+)([.)]))/
+        // this regex match the following patterns
+        // 1. blockquote starts with "> " or ">>"
+        // 2. unorder list starts with *+-
+        // 3. order list starts with "1." or "1)"
+        var regex = /^(\s*)(>[> ]*|[*+-]\s|(\d+)([.)]))/
 
-            var match
-            var multiple = cm.getSelection().split('\n').length > 1 ||
+        var match
+        var multiple = cm.getSelection().split('\n').length > 1 ||
                 cm.getSelections().length > 1
 
-            if (multiple) {
-              cm.execCommand('defaultTab')
-            } else if ((match = regex.exec(line)) !== null) {
-              var ch = match[1].length
-              var pos = {
-                line: cursor.line,
-                ch: ch
-              }
-              if (cm.getOption('indentWithTabs')) {
-                cm.replaceRange(tab, pos, pos, '+input')
-              } else {
-                cm.replaceRange(spaces, pos, pos, '+input')
-              }
-            } else {
-              if (cm.getOption('indentWithTabs')) {
-                cm.execCommand('defaultTab')
-              } else {
-                cm.replaceSelection(spaces)
-              }
-            }
-          },
-          'Cmd-Left': 'goLineLeftSmart',
-          'Cmd-Right': 'goLineRight',
-          Home: 'goLineLeftSmart',
-          End: 'goLineRight',
-          'Ctrl-C': function (cm) {
-            if (!isMac && cm.getOption('keyMap').substr(0, 3) === 'vim') {
-              document.execCommand('copy')
-            } else {
-              return this.codemirror.Pass
-            }
-          },
-          'Ctrl-*': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '*')
-          },
-          'Shift-Ctrl-8': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '*')
-          },
-          'Ctrl-_': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '_')
-          },
-          'Shift-Ctrl--': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '_')
-          },
-          'Ctrl-~': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '~')
-          },
-          'Shift-Ctrl-`': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '~')
-          },
-          'Ctrl-^': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '^')
-          },
-          'Shift-Ctrl-6': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '^')
-          },
-          'Ctrl-+': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '+')
-          },
-          'Shift-Ctrl-=': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '+')
-          },
-          'Ctrl-=': cm => {
-            utils.wrapTextWith(this.codemirror, cm, '=')
-          },
-          'Shift-Ctrl-Backspace': cm => {
-            utils.wrapTextWith(this.codemirror, cm, 'Backspace')
+        if (multiple) {
+          cm.execCommand('defaultTab')
+        } else if ((match = regex.exec(line)) !== null) {
+          var ch = match[1].length
+          var pos = {
+            line: cursor.line,
+            ch: ch
+          }
+          if (cm.getOption('indentWithTabs')) {
+            cm.replaceRange(tab, pos, pos, '+input')
+          } else {
+            cm.replaceRange(spaces, pos, pos, '+input')
+          }
+        } else {
+          if (cm.getOption('indentWithTabs')) {
+            cm.execCommand('defaultTab')
+          } else {
+            cm.replaceSelection(spaces)
           }
         }
-        return {
-          s_right_click_menu_show: false,
-          right_click_menu_top: 0,
-          right_click_menu_left: 0,
-          read_tags_display_mode: 0,
-          s_subfield: (() => {
-            return this.subfield;
-          })(),
-          s_autofocus: true,
-          // 标题导航
-          s_navigation: (() => {
-            return this.navigation;
-          })(),
-          s_scrollStyle: (() => {
-            return this.scrollStyle
-          })(),// props 是否渲染滚动条样式
-          d_value: '',// props 文本内容
-          d_render: '',// props 文本内容render
-          s_preview_switch: (() => {
-            let default_open_ = this.defaultOpen;
-            if (!default_open_) {
-              default_open_ = this.subfield ? 'preview' : 'edit';
-            }
-            return default_open_ === 'preview' ? true : false;
-          })(), // props true 展示编辑 false展示预览
-          s_fullScreen: false,// 全屏编辑标志
-          s_help: false,// markdown帮助
-          s_html_code: false,// 分栏情况下查看html
-          d_help: null,
-          d_words: null,
-          edit_scroll_height: -1,
-          s_readmodel: false,
-          s_table_enter: false, // 回车事件是否在表格中执行
-          d_history: (() => {
-            let temp_array = []
-            temp_array.push(this.value)
-            return temp_array;
-          })(), // 编辑记录
-          d_history_index: 0, // 编辑记录索引
-          currentTimeout: '',
-          d_image_file: [],
-          d_preview_imgsrc: null, // 图片预览地址
-          s_external_link: {
-            markdown_css: function() {
-              return 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css';
-            },
-            hljs_js: function() {
-              return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js';
-            },
-            hljs_lang: function(lang) {
-              return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/' + lang + '.min.js';
-            },
-            hljs_css: function(css) {
-              if (hljsCss[css]) {
-                return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css';
-              }
-              return '';
-            },
-            katex_js: function() {
-              return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
-            },
-            katex_css: function() {
-              return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
-            }
-          },
-          p_external_link: {},
-          timer: null,
-          cmOptions: {
-            line: true,
-            mode: 'gfm',
-            backdrop: 'gfm',
-            keyMap: 'sublime',
-            viewportMargin: 20,
-            styleActiveLine: true,
-            lineNumbers: true,
-            lineWrapping: true,
-            scrollPastEnd: true,
-            showCursorWhenSelecting: true,
-            highlightSelectionMatches: true,
-            indentUnit: 4,
-            continueComments: 'Enter',
-            theme: 'one-dark',
-            inputStyle: 'textarea',
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            matchTags: {
-              bothTags: true
-            },
-            autoCloseTags: true,
-            foldGutter: true,
-            gutters: [
-              'CodeMirror-linenumbers',
-              'authorship-gutters',
-              'CodeMirror-foldgutter'
-            ],
-            flattenSpans: true,
-            addModeClass: true,
-            // readOnly: true,
-            // autoRefresh: true,
-            otherCursors: true,
-            scrollbarStyle: 'overlay',
-            placeholder: '在此输入内容\n\n现在就开始编辑吧！'
-            // extraKeys: { Ctrl: "autocomplete" } // ctrl可以弹出选择项
-          },
-          // 滚动开关
-          scrollSwitchLeft: false,
-          scrollSwitchTimerLeft: null,
-          scrollSwitchRight: false,
-          scrollSwitchTimerRight: null,
-          scrollSwitch: false, // 滚动开关
-          statusBar: {
-            line: 0,
-            column: 0,
-            select: 0,
-            count: 0
+      },
+      'Cmd-Left': 'goLineLeftSmart',
+      'Cmd-Right': 'goLineRight',
+      Home: 'goLineLeftSmart',
+      End: 'goLineRight',
+      'Ctrl-C': function (cm) {
+        if (!isMac && cm.getOption('keyMap').substr(0, 3) === 'vim') {
+          document.execCommand('copy')
+        } else {
+          return this.codemirror.Pass
+        }
+      },
+      'Ctrl-*': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '*')
+      },
+      'Shift-Ctrl-8': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '*')
+      },
+      'Ctrl-_': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '_')
+      },
+      'Shift-Ctrl--': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '_')
+      },
+      'Ctrl-~': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '~')
+      },
+      'Shift-Ctrl-`': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '~')
+      },
+      'Ctrl-^': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '^')
+      },
+      'Shift-Ctrl-6': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '^')
+      },
+      'Ctrl-+': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '+')
+      },
+      'Shift-Ctrl-=': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '+')
+      },
+      'Ctrl-=': cm => {
+        utils.wrapTextWith(this.codemirror, cm, '=')
+      },
+      'Shift-Ctrl-Backspace': cm => {
+        utils.wrapTextWith(this.codemirror, cm, 'Backspace')
+      }
+    }
+    return {
+      s_right_click_menu_show: false,
+      right_click_menu_top: 0,
+      right_click_menu_left: 0,
+      read_tags_display_mode: 0,
+      s_subfield: (() => {
+        return this.subfield;
+      })(),
+      s_autofocus: true,
+      // 标题导航
+      s_navigation: (() => {
+        return this.navigation;
+      })(),
+      s_scrollStyle: (() => {
+        return this.scrollStyle
+      })(),// props 是否渲染滚动条样式
+      d_value: '',// props 文本内容
+      d_render: '',// props 文本内容render
+      s_preview_switch: (() => {
+        let default_open_ = this.defaultOpen;
+        if (!default_open_) {
+          default_open_ = this.subfield ? 'preview' : 'edit';
+        }
+        return default_open_ === 'preview' ? true : false;
+      })(), // props true 展示编辑 false展示预览
+      s_fullScreen: false,// 全屏编辑标志
+      s_help: false,// markdown帮助
+      s_html_code: false,// 分栏情况下查看html
+      d_help: null,
+      d_words: null,
+      edit_scroll_height: -1,
+      s_readmodel: false,
+      s_table_enter: false, // 回车事件是否在表格中执行
+      d_history: (() => {
+        let temp_array = []
+        temp_array.push(this.value)
+        return temp_array;
+      })(), // 编辑记录
+      d_history_index: 0, // 编辑记录索引
+      currentTimeout: '',
+      d_image_file: [],
+      d_preview_imgsrc: null, // 图片预览地址
+      s_external_link: {
+        markdown_css: function() {
+          return 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css';
+        },
+        hljs_js: function() {
+          return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js';
+        },
+        hljs_lang: function(lang) {
+          return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/' + lang + '.min.js';
+        },
+        hljs_css: function(css) {
+          if (hljsCss[css]) {
+            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css';
           }
-        };
+          return '';
+        },
+        katex_js: function() {
+          return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js';
+        },
+        katex_css: function() {
+          return 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css';
+        }
+      },
+      p_external_link: {},
+      timer: null,
+      cmOptions: {
+        line: true,
+        mode: 'gfm',
+        backdrop: 'gfm',
+        keyMap: 'sublime',
+        viewportMargin: 20,
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        scrollPastEnd: true,
+        showCursorWhenSelecting: true,
+        highlightSelectionMatches: true,
+        indentUnit: 4,
+        continueComments: 'Enter',
+        theme: 'one-dark',
+        inputStyle: 'textarea',
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        matchTags: {
+          bothTags: true
+        },
+        autoCloseTags: true,
+        foldGutter: true,
+        gutters: [
+          'CodeMirror-linenumbers',
+          'authorship-gutters',
+          'CodeMirror-foldgutter'
+        ],
+        flattenSpans: true,
+        addModeClass: true,
+        // readOnly: true,
+        // autoRefresh: true,
+        otherCursors: true,
+        scrollbarStyle: 'overlay',
+        placeholder: '在此输入内容\n\n现在就开始编辑吧！'
+        // extraKeys: { Ctrl: "autocomplete" } // ctrl可以弹出选择项
+      },
+      // 滚动开关
+      scrollSwitchLeft: false,
+      scrollSwitchTimerLeft: null,
+      scrollSwitchRight: false,
+      scrollSwitchTimerRight: null,
+      scrollSwitch: false, // 滚动开关
+      statusBar: {
+        line: 0,
+        column: 0,
+        select: 0,
+        count: 0
+      },
+      editorChangeTimer: null // 编辑改变定时器
+    };
   },
   created() {
-        var $vm = this;
-        // 初始化语言
-        this.initLanguage();
-        this.initExternalFuc();
-        this.$nextTick(() => {
-          // 初始化Textarea编辑开关
-          $vm.editableTextarea();
+    var $vm = this;
+    // 初始化语言
+    this.initLanguage();
+    this.initExternalFuc();
+    this.$nextTick(() => {
+      // 初始化Textarea编辑开关
+      $vm.editableTextarea();
 
-          // setTimeout(() => {
-          //     window.codemirror = this.codemirror
-          // }, 2000)
-        })
-        if (this.placeholder) {
-          this.cmOptions.placeholder = this.placeholder;
-        }
-        this.setEditorMode()
+      // setTimeout(() => {
+      //     window.codemirror = this.codemirror
+      // }, 2000)
+    })
+    if (this.placeholder) {
+      this.cmOptions.placeholder = this.placeholder;
+    }
+    this.setEditorMode()
   },
   mounted() {
-        var $vm = this;
-        this.$el.addEventListener('paste', function (e) {
-          $vm.$paste(e);
-        })
-        this.$el.addEventListener('drop', function (e) {
-          $vm.$drag(e);
-        })
-        // 浏览器siz大小
-        /* windowResize(this); */
-        keydownListen(this);
-        // 图片预览事件监听
-        ImagePreviewListener(this);
-        // fullscreen事件
-        fullscreenchange(this);
-        this.d_value = this.value;
-        // 将help添加到末尾
-        document.body.appendChild(this.$refs.help);
-        this.loadExternalLink('markdown_css', 'css');
-        this.loadExternalLink('katex_css', 'css')
-        this.loadExternalLink('katex_js', 'js', function() {
-          $vm.iRender(true);
-        })
-        this.loadExternalLink('hljs_js', 'js', function() {
-          $vm.iRender(true);
-        })
+    var $vm = this;
+    this.$el.addEventListener('paste', function (e) {
+      $vm.$paste(e);
+    })
+    this.$el.addEventListener('drop', function (e) {
+      $vm.$drag(e);
+    })
+    // 浏览器siz大小
+    /* windowResize(this); */
+    keydownListen(this);
+    // 图片预览事件监听
+    ImagePreviewListener(this);
+    // fullscreen事件
+    fullscreenchange(this);
+    this.d_value = this.value;
+    // 将help添加到末尾
+    document.body.appendChild(this.$refs.help);
+    this.loadExternalLink('markdown_css', 'css');
+    this.loadExternalLink('katex_css', 'css')
+    this.loadExternalLink('katex_js', 'js', function() {
+      $vm.iRender(true);
+    })
+    this.loadExternalLink('hljs_js', 'js', function() {
+      $vm.iRender(true);
+    })
 
-        if (!(typeof $vm.externalLink === 'object' && typeof $vm.externalLink['markdown_css'] === 'function')) {
-          // 没有外部文件要来接管markdown样式，可以更改markdown样式。
-          $vm.codeStyleChange($vm.codeStyle, true)
-        }
+    if (!(typeof $vm.externalLink === 'object' && typeof $vm.externalLink['markdown_css'] === 'function')) {
+      // 没有外部文件要来接管markdown样式，可以更改markdown样式。
+      $vm.codeStyleChange($vm.codeStyle, true)
+    }
   },
   beforeDestroy() {
-        document.body.removeChild(this.$refs.help);
+    document.body.removeChild(this.$refs.help);
   },
   getMarkdownIt() {
-        return this.mixins[0].data().markdownIt
+    return this.mixins[0].data().markdownIt
   },
   methods: {
-      // 设置编辑器模式 如果小于768设置为阅读模式
-        setEditorMode() {
-          try {
-            let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
-            if (clientWidth < 768) {
-              this.s_preview_switch = false
-              this.s_subfield = false
-            }
-          } catch (e) {
-            console.log(e)
-          }
-        },
-        loadExternalLink(name, type, callback) {
-          if (typeof this.p_external_link[name] !== 'function') {
-            if (this.p_external_link[name] != false) {
-              console.error('external_link.' + name, 'is not a function, if you want to disabled this error log, set external_link.' + name, 'to function or false');
-            }
-            return;
-          }
-          var _obj = {
-            'css': loadLink,
-            'js': loadScript
-          };
-          if (_obj.hasOwnProperty(type)) {
-            _obj[type](this.p_external_link[name](), callback);
-          }
-        },
-        initExternalFuc() {
-          var $vm = this;
-          var _external_ = ['markdown_css', 'hljs_js', 'hljs_css', 'hljs_lang', 'katex_js', 'katex_css'];
-          var _type_ = typeof $vm.externalLink;
-          var _is_object = (_type_ === 'object');
-          var _is_boolean = (_type_ === 'boolean');
-          for (var i = 0; i < _external_.length; i++) {
-            if ((_is_boolean && !$vm.externalLink) || (_is_object && $vm.externalLink[_external_[i]] === false)) {
-              $vm.p_external_link[_external_[i]] = false;
-            } else if (_is_object && typeof $vm.externalLink[_external_[i]] === 'function') {
-              $vm.p_external_link[_external_[i]] = $vm.externalLink[_external_[i]];
-            } else {
-              $vm.p_external_link[_external_[i]] = $vm.s_external_link[_external_[i]];
-            }
-          }
-        },
-        $drag($e) {
-          try {
-            var dataTransfer = $e.dataTransfer;
-            if (dataTransfer) {
-              var files = dataTransfer.files;
+    // 设置编辑器模式 如果小于768设置为阅读模式
+    setEditorMode() {
+      try {
+        let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+        if (clientWidth < 768) {
+          this.s_preview_switch = false
+          this.s_subfield = false
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    loadExternalLink(name, type, callback) {
+      if (typeof this.p_external_link[name] !== 'function') {
+        if (this.p_external_link[name] != false) {
+          console.error('external_link.' + name, 'is not a function, if you want to disabled this error log, set external_link.' + name, 'to function or false');
+        }
+        return;
+      }
+      var _obj = {
+        'css': loadLink,
+        'js': loadScript
+      };
+      if (_obj.hasOwnProperty(type)) {
+        _obj[type](this.p_external_link[name](), callback);
+      }
+    },
+    initExternalFuc() {
+      var $vm = this;
+      var _external_ = ['markdown_css', 'hljs_js', 'hljs_css', 'hljs_lang', 'katex_js', 'katex_css'];
+      var _type_ = typeof $vm.externalLink;
+      var _is_object = (_type_ === 'object');
+      var _is_boolean = (_type_ === 'boolean');
+      for (var i = 0; i < _external_.length; i++) {
+        if ((_is_boolean && !$vm.externalLink) || (_is_object && $vm.externalLink[_external_[i]] === false)) {
+          $vm.p_external_link[_external_[i]] = false;
+        } else if (_is_object && typeof $vm.externalLink[_external_[i]] === 'function') {
+          $vm.p_external_link[_external_[i]] = $vm.externalLink[_external_[i]];
+        } else {
+          $vm.p_external_link[_external_[i]] = $vm.s_external_link[_external_[i]];
+        }
+      }
+    },
+    $drag($e) {
+      try {
+        var dataTransfer = $e.dataTransfer;
+        if (dataTransfer) {
+          var files = dataTransfer.files;
 
-              if (files.length < 0) return
+          if (files.length < 0) return
 
-              let filesList = []
-              for (let i = 0; i < files.length; i++) {
-              // 如果是图片 其他不上传
-                let type = files[i].type
-                if (type.indexOf('image') !== -1) {
-                  filesList.push(files[i])
-                }
-              }
-              $e.preventDefault();
-              this.imageMultipleUpload(filesList)
+          let filesList = []
+          for (let i = 0; i < files.length; i++) {
+            // 如果是图片 其他不上传
+            let type = files[i].type
+            if (type.indexOf('image') !== -1) {
+              filesList.push(files[i])
             }
-          } catch (e) {
-            console.log(e)
           }
-        },
-        $paste($e) {
-          try {
-            let clipboardData = $e.clipboardData;
-            // console.log('file', clipboardData.items[0])
-            // console.log('file', clipboardData.items[1])
-            // console.log('file', clipboardData.items[2])
-            // console.log('file', clipboardData.items)
-            /**
-               * 测试了 chrome safari mac
-               * 注: 只有在桌面复制粘贴的情况下 在浏览器里面 copy image是正常的
-               * 1. chrome 粘贴图片会产生一条 string 文件名 safari不会
-               * 2. 粘贴pdf mac pdf 会当 image 一样粘贴图片 并且产生文件名
-               * 3. 粘贴pdf mac safari 会复制文件名 但是类型是 pdf 会当作文字粘贴
-               * 4. 在chrome里面 多个图片只会取一张 最后一张
-               * 5. 在safari里面 多个图片会全部采用
-               */
-            if (clipboardData) {
-              let items = clipboardData.items;
-              if (items && items.length) {
-                let fileLists = []
-                for (var i = 0; i < items.length; i++) {
-                  if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
-                  // 有图片 第一个 item 为 string 然后去掉这条内容 (chrome)
-                  // 只能解决单个图片的复制 如果同时复制多个的话无法删除内容(需要写大量的判断了)
-                    if (items[0].kind === 'string') {
-                      let str = clipboardData.getData('text/plain')
-                      if (str) {
-                        console.log('items[0]', str)
-                        this.replaceRange(str, '')
-                      }
-                    }
-                    let file = items[i].getAsFile();
-                    fileLists.push(file)
+          $e.preventDefault();
+          this.imageMultipleUpload(filesList)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    $paste($e) {
+      try {
+        let clipboardData = $e.clipboardData;
+        // console.log('file', clipboardData.items[0])
+        // console.log('file', clipboardData.items[1])
+        // console.log('file', clipboardData.items[2])
+        // console.log('file', clipboardData.items)
+        /**
+         * 测试了 chrome safari mac
+         * 注: 只有在桌面复制粘贴的情况下 在浏览器里面 copy image是正常的
+         * 1. chrome 粘贴图片会产生一条 string 文件名 safari不会
+         * 2. 粘贴pdf mac pdf 会当 image 一样粘贴图片 并且产生文件名
+         * 3. 粘贴pdf mac safari 会复制文件名 但是类型是 pdf 会当作文字粘贴
+         * 4. 在chrome里面 多个图片只会取一张 最后一张
+         * 5. 在safari里面 多个图片会全部采用
+         */
+        if (clipboardData) {
+          let items = clipboardData.items;
+          if (items && items.length) {
+            let fileLists = []
+            for (var i = 0; i < items.length; i++) {
+              if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
+                // 有图片 第一个 item 为 string 然后去掉这条内容 (chrome)
+                // 只能解决单个图片的复制 如果同时复制多个的话无法删除内容(需要写大量的判断了)
+                if (items[0].kind === 'string') {
+                  let str = clipboardData.getData('text/plain')
+                  if (str) {
+                    console.log('items[0]', str)
+                    this.replaceRange(str, '')
                   }
                 }
-                stopEvent($e)
-                this.imageMultipleUpload(fileLists)
+                let file = items[i].getAsFile();
+                fileLists.push(file)
               }
             }
-          } catch (e) {
-            console.log(e)
+            stopEvent($e)
+            this.imageMultipleUpload(fileLists)
           }
-        },
-        // 替换内容 需要替换的 str 替换图片标题 val 替换图片地址 url
-        replaceRange (str, val) {
-        //  替代品
-          let replacements = [];
-          // 需要代替的字符
-          let string = str
-          // 获取多少行
-          let lines = this.codemirror.getValue().split('\n');
-          // 新的元素
-          let newValue = val
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 替换内容 需要替换的 str 替换图片标题 val 替换图片地址 url
+    replaceRange (str, val) {
+      //  替代品
+      let replacements = [];
+      // 需要代替的字符
+      let string = str
+      // 获取多少行
+      let lines = this.codemirror.getValue().split('\n');
+      // 新的元素
+      let newValue = val
 
-          for (let i = 0; i < lines.length; i++) {
-          // 找到代替的字符
-            let ch = lines[i].indexOf(string);
-            if (ch !== -1) {
-            // 写入位置
-              let from = { line:i, ch:ch }
-              let to =  { line:i, ch:ch + string.length }
-              replacements.push({replacement: newValue, from, to})
-            }
-          }
-          // 批量修改
-          for (let i = 0; i < replacements.length; i++) {
-            let data = replacements[i]
-            this.codemirror.replaceRange(data.replacement, data.from, data.to);
-          }
-        },
-        // files array
-        async imageMultipleUpload(files) {
-          if (!files || !files.length) return;
-          if (files.length > 5) {
-            return alert('一次最多上传五张图片')
-          }
+      for (let i = 0; i < lines.length; i++) {
+        // 找到代替的字符
+        let ch = lines[i].indexOf(string);
+        if (ch !== -1) {
+          // 写入位置
+          let from = { line:i, ch:ch }
+          let to =  { line:i, ch:ch + string.length }
+          replacements.push({replacement: newValue, from, to})
+        }
+      }
+      // 批量修改
+      for (let i = 0; i < replacements.length; i++) {
+        let data = replacements[i]
+        this.codemirror.replaceRange(data.replacement, data.from, data.to);
+      }
+    },
+    // files array
+    async imageMultipleUpload(files) {
+      if (!files || !files.length) return;
+      if (files.length > 5) {
+        return alert('一次最多上传五张图片')
+      }
 
-          // 替换元素的内容
-          let replacementsArray = []
-          // 插入文本 用作占位符 完成后被替换
-          const progressText = filename => `![Uploading file...${filename}]()`
+      // 替换元素的内容
+      let replacementsArray = []
+      // 插入文本 用作占位符 完成后被替换
+      const progressText = filename => `![Uploading file...${filename}]()`
 
-          // 上传成功后 替换 progressText
-          const urlText = (imageName = '', filename) => `![${imageName}](${filename})`
+      // 上传成功后 替换 progressText
+      const urlText = (imageName = '', filename) => `![${imageName}](${filename})`
 
-          for (let i = 0; i < files.length; i++) {
-            let titleId = ID() // 唯一ID
+      for (let i = 0; i < files.length; i++) {
+        let titleId = ID() // 唯一ID
 
-            // 写入一段默认的空图片等待上传
-            this.toolbar_left_click('imagelink', {
-              action: this.imageUploadAction, // default customize
-              url: '',
-              title: `Uploading file...${titleId}`
-            })
+        // 写入一段默认的空图片等待上传
+        this.toolbar_left_click('imagelink', {
+          action: this.imageUploadAction, // default customize
+          url: '',
+          title: `Uploading file...${titleId}`
+        })
 
-            // 因为根据光标位置插入 所有回由下往上插入 所以使用unshift
-            replacementsArray.unshift({
-              key: progressText(titleId),
-              val: files[i]
-            })
+        // 因为根据光标位置插入 所有回由下往上插入 所以使用unshift
+        replacementsArray.unshift({
+          key: progressText(titleId),
+          val: files[i]
+        })
+      }
+      for (let i = 0; i < replacementsArray.length; i++) {
+        try {
+          const res = await this.imageUploadFn(replacementsArray[i].val)
+          // await sleep(2000)
+          // const res = 'https://ssimg.frontenduse.top/article/2020/05/27/b233a6948f8b3f31f0ca8b94de092376.png'
+          // 上传完成
+          if (res) {
+            this.replaceRange(replacementsArray[i].key, urlText(replacementsArray[i].val.name || '', res))
+          } else {
+            console.log(res)
+            this.replaceRange(replacementsArray[i].key, urlText('Upload fail', ''))
           }
-          for (let i = 0; i < replacementsArray.length; i++) {
-            try {
-              const res = await this.imageUploadFn(replacementsArray[i].val)
-              // await sleep(2000)
-              // const res = 'https://ssimg.frontenduse.top/article/2020/05/27/b233a6948f8b3f31f0ca8b94de092376.png'
-              // 上传完成
-              if (res) {
-                this.replaceRange(replacementsArray[i].key, urlText(replacementsArray[i].val.name || '', res))
-              } else {
-                console.log(res)
-                this.replaceRange(replacementsArray[i].key, urlText('Upload fail', ''))
-              }
-            } catch (e) {
-              this.replaceRange(replacementsArray[i].key, urlText('Upload error', ''))
-              console.log(e)
-            }
-          }
-        },
-        $imgTouch(file) {
-          var $vm = this;
-        // TODO 跳转到图片位置
-        },
-        $imgDel(file) {
-          this.markdownIt.image_del(file[1]);
-          // 删除所有markdown中的图片
-          let fileReg = file[0]
-          let reg = new RegExp(`\\!\\[${file[1]._name}\\]\\(${fileReg}\\)`, "g")
+        } catch (e) {
+          this.replaceRange(replacementsArray[i].key, urlText('Upload error', ''))
+          console.log(e)
+        }
+      }
+    },
+    $imgTouch(file) {
+      var $vm = this;
+      // TODO 跳转到图片位置
+    },
+    $imgDel(file) {
+      this.markdownIt.image_del(file[1]);
+      // 删除所有markdown中的图片
+      let fileReg = file[0]
+      let reg = new RegExp(`\\!\\[${file[1]._name}\\]\\(${fileReg}\\)`, "g")
 
-          this.d_value = this.d_value.replace(reg, '');
-          this.iRender();
-          this.$emit('imgDel', file);
-        },
-        $imgUpdateByUrl(pos, url) {
-          var $vm = this;
-          this.markdownIt.image_add(pos, url);
-          this.$nextTick(function () {
-            $vm.d_render = this.markdownIt.render(this.d_value);
-          })
-        },
-        $imgAddByUrl(pos, url) {
-          if (this.$refs.toolbar_left.$imgAddByUrl(pos, url)) {
-            this.$imgUpdateByUrl(pos, url);
-            return true;
+      this.d_value = this.d_value.replace(reg, '');
+      this.iRender();
+      this.$emit('imgDel', file);
+    },
+    $imgUpdateByUrl(pos, url) {
+      var $vm = this;
+      this.markdownIt.image_add(pos, url);
+      this.$nextTick(function () {
+        $vm.d_render = this.markdownIt.render(this.d_value);
+      })
+    },
+    $imgAddByUrl(pos, url) {
+      if (this.$refs.toolbar_left.$imgAddByUrl(pos, url)) {
+        this.$imgUpdateByUrl(pos, url);
+        return true;
+      }
+      return false;
+    },
+    $img2Url(fileIndex, url) {
+      // x.replace(/(\[[^\[]*?\](?=\())\(\s*(\.\/2)\s*\)/g, "$1(http://path/to/png.png)")
+      var reg_str = "/(!\\[\[^\\[\]*?\\]\(?=\\(\)\)\\(\\s*\(" + fileIndex + "\)\\s*\\)/g"
+      var reg = eval(reg_str);
+      this.d_value = this.d_value.replace(reg, "$1(" + url + ")")
+      this.$refs.toolbar_left.$changeUrl(fileIndex, url)
+      this.iRender()
+    },
+    $imglst2Url(imglst) {
+      if (imglst instanceof Array) {
+        for (var i = 0; i < imglst.length; i++) {
+          this.$img2Url(imglst[i][0], imglst[i][1]);
+        }
+      }
+    },
+    toolbar_left_click(_type, data = null) {
+      // toolbar_left_click(_type, this);
+      toolbar(_type, this, data)
+    },
+    toolbar_left_addlink(_type, text, link) {
+      toolbar_left_addlink(_type, text, link, this);
+    },
+    toolbar_right_click(_type) {
+      toolbar_right_click(_type, this);
+    },
+    toolbar_toggle_click(_type) {
+      toolbar_right_click(_type, this);
+    },
+    read_tags_mode_click(newVal) {
+      this.read_tags_display_mode = newVal;
+      this.iRender();
+    },
+    getNavigation($vm, full) {
+      return getNavigation($vm, full);
+    },
+    // @event
+    // 修改数据触发 （val ， val_render）
+    change(val, render) {
+      this.$emit('change', val, render)
+    },
+    // 切换全屏触发 （status , val）
+    fullscreen(status, val) {
+      this.$emit('fullScreen', status, val)
+    },
+    // 打开阅读模式触发（status , val）
+    readmodel(status, val) {
+      this.$emit('readModel', status, val)
+    },
+    // 切换阅读编辑触发 （status , val）
+    previewtoggle(status, val) {
+      this.$emit('previewToggle', status, val)
+    },
+    // 切换分栏触发 （status , val）
+    subfieldtoggle(status, val) {
+      this.$emit('subfieldToggle', status, val)
+    },
+    // 切换htmlcode触发 （status , val）
+    htmlcode(status, val) {
+      this.$emit('htmlCode', status, val)
+    },
+    // 打开 , 关闭 help触发 （status , val）
+    helptoggle(status, val) {
+      this.$emit('helpToggle', status, val)
+    },
+    // 监听ctrl + s
+    save(val, render) {
+      this.$emit('save', val, render)
+    },
+    // 导航栏切换
+    navigationtoggle(status, val) {
+      this.$emit('navigationToggle', status, val)
+    },
+    $toolbar_right_read_change_status() {
+      this.s_readmodel = !this.s_readmodel
+      if (this.readmodel) {
+        this.readmodel(this.s_readmodel, this.d_value)
+      }
+      if (this.s_readmodel && this.toolbars.navigation) {
+        this.getNavigation(this, true)
+      }
+    },
+    // ---------------------------------------
+    // 滚动条联动
+    $v_edit_scroll($event) {
+      scrollLink($event, this);
+    },
+    // 同步滚动
+    asyncScroll(e, side = 'left') {
+      // 设置右侧滚动
+      const setPreview = (domClass, scrollTop) => {
+        try {
+          anime({
+            targets: domClass,
+            scrollTop: scrollTop,
+            duration: 100,
+            easing: 'linear'
+          });
+        } catch (e) {
+          console.log(e)
+          document.querySelector(domClass).scrollTop = scrollTop
+        }
+      }
+
+      if (e.type && e.type === 'scroll') {
+        // console.log(side, e)
+      }
+      // 公共变量
+      const deviation = 10 // 偏差距离
+      const showContent = document.querySelector('.v-show-content') // 预览Dom
+
+      const defaultTextHeight = this.codemirror.defaultTextHeight() || 24
+      // 如果行高 高得离谱.....
+      const lineHeight = defaultTextHeight <= 48 ? defaultTextHeight : 24 // 获取行高
+
+      if (side === 'left') {
+        // console.log('scrollSwitchRight', this.scrollSwitchRight)
+        if (this.scrollSwitchRight) return
+
+        // 滚动信息
+        const scrollInfo = this.codemirror.getScrollInfo()
+
+        // 判断到达顶部
+        if (scrollInfo.top <= deviation) {
+          setPreview('.v-show-content', 0)
+          return
+        }
+
+        // 判断到达底部
+        if (scrollInfo.top >= (scrollInfo.height - scrollInfo.clientHeight - deviation)) {
+          let scrollTop = showContent.scrollHeight
+          setPreview('.v-show-content', scrollTop)
+          return
+        }
+
+        // 总行数
+        const lineCount = this.codemirror.lineCount()
+
+        const line = Math.floor(scrollInfo.top / lineHeight) + 1
+
+        // todo 到底部判断
+
+        // 找到行数并设置scrollTop
+        let view = document.querySelectorAll('.v-show-content > [data-startline]')
+        for (let i = 0; i < view.length; i++) {
+          let dataLine = view[i].getAttribute('data-startline')
+          if (line === Number(dataLine)) {
+            setPreview('.v-show-content', view[i].offsetTop)
+            // 找到减少开销
+            break;
           }
-          return false;
-        },
-        $img2Url(fileIndex, url) {
-        // x.replace(/(\[[^\[]*?\](?=\())\(\s*(\.\/2)\s*\)/g, "$1(http://path/to/png.png)")
-          var reg_str = "/(!\\[\[^\\[\]*?\\]\(?=\\(\)\)\\(\\s*\(" + fileIndex + "\)\\s*\\)/g"
-          var reg = eval(reg_str);
-          this.d_value = this.d_value.replace(reg, "$1(" + url + ")")
-          this.$refs.toolbar_left.$changeUrl(fileIndex, url)
-          this.iRender()
-        },
-        $imglst2Url(imglst) {
-          if (imglst instanceof Array) {
-            for (var i = 0; i < imglst.length; i++) {
-              this.$img2Url(imglst[i][0], imglst[i][1]);
-            }
+        }
+      } else if (side === 'right') {
+        // console.log('scrollSwitchLeft', this.scrollSwitchLeft)
+        if (this.scrollSwitchLeft) return
+
+        const lineMarkers = document.querySelectorAll('.v-show-content > [data-startline]')
+        const viewParentScroll = showContent.scrollTop
+
+        // 判断到达顶部
+        if (showContent.scrollTop <= deviation) {
+          this.codemirror.scrollTo(null, 0)
+          return
+        }
+
+        // 判断到达底部
+        if (showContent.scrollTop >= (showContent.scrollHeight - showContent.clientHeight - deviation)) {
+          const lineCount = this.codemirror.lineCount()
+          this.codemirror.scrollTo(null, lineCount * lineHeight)
+          return
+        }
+
+        for (let i = 0; i < lineMarkers.length; i++) {
+          let line = lineMarkers[i]
+          let dataLine = line.getAttribute('data-startline')
+          if (line.offsetTop >= viewParentScroll) {
+            this.codemirror.scrollTo(null, (dataLine * lineHeight - lineHeight))
+            break;
           }
-        },
-        toolbar_left_click(_type, data = null) {
-        // toolbar_left_click(_type, this);
-          toolbar(_type, this, data)
-        },
-        toolbar_left_addlink(_type, text, link) {
-          toolbar_left_addlink(_type, text, link, this);
-        },
-        toolbar_right_click(_type) {
-          toolbar_right_click(_type, this);
-        },
-        toolbar_toggle_click(_type) {
-          toolbar_right_click(_type, this);
-        },
-        read_tags_mode_click(newVal) {
-          this.read_tags_display_mode = newVal;
-          this.iRender();
-        },
-        getNavigation($vm, full) {
-          return getNavigation($vm, full);
-        },
-        // @event
-        // 修改数据触发 （val ， val_render）
-        change(val, render) {
-          this.$emit('change', val, render)
-        },
-        // 切换全屏触发 （status , val）
-        fullscreen(status, val) {
-          this.$emit('fullScreen', status, val)
-        },
-        // 打开阅读模式触发（status , val）
-        readmodel(status, val) {
-          this.$emit('readModel', status, val)
-        },
-        // 切换阅读编辑触发 （status , val）
-        previewtoggle(status, val) {
-          this.$emit('previewToggle', status, val)
-        },
-        // 切换分栏触发 （status , val）
-        subfieldtoggle(status, val) {
-          this.$emit('subfieldToggle', status, val)
-        },
-        // 切换htmlcode触发 （status , val）
-        htmlcode(status, val) {
-          this.$emit('htmlCode', status, val)
-        },
-        // 打开 , 关闭 help触发 （status , val）
-        helptoggle(status, val) {
-          this.$emit('helpToggle', status, val)
-        },
-        // 监听ctrl + s
-        save(val, render) {
-          this.$emit('save', val, render)
-        },
-        // 导航栏切换
-        navigationtoggle(status, val) {
-          this.$emit('navigationToggle', status, val)
-        },
-        $toolbar_right_read_change_status() {
-          this.s_readmodel = !this.s_readmodel
-          if (this.readmodel) {
-            this.readmodel(this.s_readmodel, this.d_value)
-          }
-          if (this.s_readmodel && this.toolbars.navigation) {
-            this.getNavigation(this, true)
-          }
-        },
-        // ---------------------------------------
-        // 滚动条联动
-        $v_edit_scroll($event) {
-          scrollLink($event, this);
-        },
-        // 同步滚动
-        asyncScroll(e, side = 'left') {
-        // 设置右侧滚动
-          const setPreview = (domClass, scrollTop) => {
+        }
+      } else {
+        //
+      }
+    },
+    $v_edit_scroll__left: throttle(function($event) {
+      this.scrollSwitchLeft = true
+      this.asyncScroll($event, 'left')
+      clearTimeout(this.scrollSwitchTimerLeft)
+      this.scrollSwitchTimerLeft = setTimeout(() => {
+        this.scrollSwitchLeft = false
+      }, 300)
+    }, 5),
+    $v_edit_scroll__right: throttle(function($event) {
+      this.scrollSwitchRight = true
+      this.asyncScroll($event, 'right')
+      clearTimeout(this.scrollSwitchTimerRight)
+      this.scrollSwitchTimerRight = setTimeout(() => {
+        this.scrollSwitchRight = false
+      }, 300)
+    }, 5),
+    // 试试简书的
+    bindScroll() {
+      var spSwitchMain; // 切换的那个按钮所在的窗体
+      var txtMain;      // 输入框
+      var spPreview;    // 预览框
+
+      const SWITCH_FEATURE   = 'a.fa.fa-columns';
+      const EXPAND_FEATURE   = 'a.fa.fa-expand';
+      const COMPRESS_FEATURE = 'a.fa.fa-compress';
+
+      let getInput = document.querySelector('.CodeMirror-scroll');
+      let getPreview = document.querySelector('#previewContent');
+
+      const scrollEvent = () => {
+        txtMain = getInput
+        spPreview = getPreview
+
+        if (txtMain === undefined) {
+          return;
+        }
+        if (spPreview === undefined) {
+          return;
+        }
+
+        let mainFlag = false; // 抵消两个滚动事件之间互相触发
+        let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
+
+        const scrolling = (who) => {
+          // 滚动信息
+          const scrollInfo = this.codemirror.getScrollInfo()
+
+          // 设置右侧滚动
+          const setPreview = (dom, scrollTop) => {
             try {
               anime({
-                targets: domClass,
+                targets: dom,
                 scrollTop: scrollTop,
                 duration: 100,
                 easing: 'linear'
               });
             } catch (e) {
               console.log(e)
-              document.querySelector(domClass).scrollTop = scrollTop
+              dom.scrollTop = scrollTop
             }
           }
 
-          if (e.type && e.type === 'scroll') {
-          // console.log(side, e)
-          }
-          // 公共变量
-          const deviation = 10 // 偏差距离
-          const showContent = document.querySelector('.v-show-content') // 预览Dom
-
-          const defaultTextHeight = this.codemirror.defaultTextHeight() || 24
-          // 如果行高 高得离谱.....
-          const lineHeight = defaultTextHeight <= 48 ? defaultTextHeight : 24 // 获取行高
-
-          if (side === 'left') {
-          // console.log('scrollSwitchRight', this.scrollSwitchRight)
-            if (this.scrollSwitchRight) return
-
-            // 滚动信息
-            const scrollInfo = this.codemirror.getScrollInfo()
-
+          if (who === 'pre') {
             // 判断到达顶部
-            if (scrollInfo.top <= deviation) {
-              setPreview('.v-show-content', 0)
-              return
-            }
-
-            // 判断到达底部
-            if (scrollInfo.top >= (scrollInfo.height - scrollInfo.clientHeight - deviation)) {
-              let scrollTop = showContent.scrollHeight
-              setPreview('.v-show-content', scrollTop)
-              return
-            }
-
-            // 总行数
-            const lineCount = this.codemirror.lineCount()
-
-            const line = Math.floor(scrollInfo.top / lineHeight) + 1
-
-            // todo 到底部判断
-
-            // 找到行数并设置scrollTop
-            let view = document.querySelectorAll('.v-show-content > [data-startline]')
-            for (let i = 0; i < view.length; i++) {
-              let dataLine = view[i].getAttribute('data-startline')
-              if (line === Number(dataLine)) {
-                setPreview('.v-show-content', view[i].offsetTop)
-                // 找到减少开销
-                break;
-              }
-            }
-          } else if (side === 'right') {
-          // console.log('scrollSwitchLeft', this.scrollSwitchLeft)
-            if (this.scrollSwitchLeft) return
-
-            const lineMarkers = document.querySelectorAll('.v-show-content > [data-startline]')
-            const viewParentScroll = showContent.scrollTop
-
-            // 判断到达顶部
-            if (showContent.scrollTop <= deviation) {
+            if (getPreview.scrollTop <= 0) {
               this.codemirror.scrollTo(null, 0)
               return
             }
 
             // 判断到达底部
-            if (showContent.scrollTop >= (showContent.scrollHeight - showContent.clientHeight - deviation)) {
-              const lineCount = this.codemirror.lineCount()
-              this.codemirror.scrollTo(null, lineCount * lineHeight)
+            if (getPreview.scrollTop >= (getPreview.scrollHeight - getPreview.clientHeight)) {
+              this.codemirror.scrollTo(null, scrollInfo.height - scrollInfo.clientHeight)
               return
             }
 
-            for (let i = 0; i < lineMarkers.length; i++) {
-              let line = lineMarkers[i]
-              let dataLine = line.getAttribute('data-startline')
-              if (line.offsetTop >= viewParentScroll) {
-                this.codemirror.scrollTo(null, (dataLine * lineHeight - lineHeight))
-                break;
-              }
-            }
-          } else {
-          //
-          }
-        },
-        $v_edit_scroll__left: throttle(function($event) {
-          this.scrollSwitchLeft = true
-          this.asyncScroll($event, 'left')
-          clearTimeout(this.scrollSwitchTimerLeft)
-          this.scrollSwitchTimerLeft = setTimeout(() => {
-            this.scrollSwitchLeft = false
-          }, 300)
-        }, 5),
-        $v_edit_scroll__right: throttle(function($event) {
-          this.scrollSwitchRight = true
-          this.asyncScroll($event, 'right')
-          clearTimeout(this.scrollSwitchTimerRight)
-          this.scrollSwitchTimerRight = setTimeout(() => {
-            this.scrollSwitchRight = false
-          }, 300)
-        }, 5),
-        // 试试简书的
-        bindScroll() {
-          var spSwitchMain; // 切换的那个按钮所在的窗体
-          var txtMain;      // 输入框
-          var spPreview;    // 预览框
-
-          const SWITCH_FEATURE   = 'a.fa.fa-columns';
-          const EXPAND_FEATURE   = 'a.fa.fa-expand';
-          const COMPRESS_FEATURE = 'a.fa.fa-compress';
-
-          let getInput = document.querySelector('.CodeMirror-scroll');
-          let getPreview = document.querySelector('#previewContent');
-
-          const scrollEvent = () => {
-            txtMain = getInput
-            spPreview = getPreview
-
-            if (txtMain === undefined) {
+            preFlag = true;
+            if (mainFlag === true) { // 抵消两个滚动事件之间互相触发
+              mainFlag = false;
+              preFlag = false;
               return;
             }
-            if (spPreview === undefined) {
-              return;
-            }
+            // console.log('pre??')
 
-            let mainFlag = false; // 抵消两个滚动事件之间互相触发
-            let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
-
-            const scrolling = (who) => {
-              // 滚动信息
-              const scrollInfo = this.codemirror.getScrollInfo()
-
-              // 设置右侧滚动
-              const setPreview = (dom, scrollTop) => {
-                try {
-                  anime({
-                    targets: dom,
-                    scrollTop: scrollTop,
-                    duration: 100,
-                    easing: 'linear'
-                  });
-                } catch (e) {
-                  console.log(e)
-                  dom.scrollTop = scrollTop
-                }
-              }
-
-              if (who === 'pre') {
-              // 判断到达顶部
-                if (getPreview.scrollTop <= 0) {
-                  this.codemirror.scrollTo(null, 0)
-                  return
-                }
-
-                // 判断到达底部
-                if (getPreview.scrollTop >= (getPreview.scrollHeight - getPreview.clientHeight)) {
-                  this.codemirror.scrollTo(null, scrollInfo.height - scrollInfo.clientHeight)
-                  return
-                }
-
-                preFlag = true;
-                if (mainFlag === true) { // 抵消两个滚动事件之间互相触发
-                  mainFlag = false;
-                  preFlag = false;
-                  return;
-                }
-                // console.log('pre??')
-
-                const scrollTopNumber = Math.round((spPreview.scrollTop + spPreview.clientHeight) * txtMain.scrollHeight  / spPreview.scrollHeight - txtMain.clientHeight);
-                // console.log(scrollTopNumber)
-                this.codemirror.scrollTo(null, scrollTopNumber)
-                // txtMain.scrollTop = scrollTop
-                return;
-              }
-              if (who === 'main') {
-              // 如果在写的时候 编辑区域不允许对照滚动 防止飘
-                if (this.scrollSwitch) return
-
-                mainFlag = true;
-                if (preFlag === true) { // 抵消两个滚动事件之间互相触发
-                  mainFlag = false;
-                  preFlag = false;
-                  return;
-                }
-
-                // 判断到达顶部
-                if (scrollInfo.top <= 0) {
-                // setPreview(spPreview, 0)
-                  spPreview.scrollTop = 0
-                  return
-                }
-
-                // 判断到达底部
-                if (scrollInfo.top >= (scrollInfo.height - scrollInfo.clientHeight)) {
-                  let scrollTop = spPreview.scrollHeight
-                  // setPreview(spPreview, scrollTop)
-                  spPreview.scrollTop = spPreview.scrollHeight
-                  return
-                }
-
-                // console.log('main??', scrollInfo)
-
-                const scrollTopNumber = Math.round((txtMain.scrollTop + txtMain.clientHeight) * spPreview.scrollHeight / txtMain.scrollHeight - spPreview.clientHeight);
-
-                spPreview.scrollTop = scrollTopNumber
-              }
-            }
-
-            const mainOnscroll = () => {
-              if (this.isMiniScreen()) return
-
-              // 重置滚动状态
-              this.scrollSwitch = false
-
-              scrolling('main');
-            }
-
-            const preOnscroll = () => {
-              if (this.isMiniScreen()) return
-
-              scrolling('pre');
-            }
-
-            try {
-              if (txtMain) {
-                txtMain.addEventListener('scroll', throttle(mainOnscroll, 5))
-              }
-
-              if (spPreview) {
-                spPreview.addEventListener('scroll', throttle(preOnscroll, 5))
-              }
-            } catch (e) {
-              console.log(e)
-            }
-          }
-
-          function cycle() {
-            scrollEvent();
-          // $(EXPAND_FEATURE).on('click', scrollEvent);
-          // $(COMPRESS_FEATURE).on('click', scrollEvent);
-          // $(SWITCH_FEATURE).on("click", scrollEvent);
-
-          // window.setTimeout(cycle, 1000);
-          }
-
-          cycle();
-        },
-        // 工具栏插入内容
-        insertText(obj, {prefix, subfix, str, type}) {
-        // if (this.s_preview_switch) {
-
-          insertTextAtCaret(obj, {prefix, subfix, str, type}, this);
-        },
-        insertTab() {
-          insertTab(this, this.tabSize)
-        },
-        insertOl() {
-          insertOl(this)
-        },
-        removeLine() {
-          removeLine(this)
-        },
-        insertUl() {
-          insertUl(this)
-        },
-        unInsertTab() {
-          unInsertTab(this, this.tabSize)
-        },
-        insertEnter(event) {
-          insertEnter(this, event)
-        },
-        saveHistory() {
-          this.d_history.splice(this.d_history_index + 1, this.d_history.length)
-          this.d_history.push(this.d_value)
-          this.d_history_index = this.d_history.length - 1
-        },
-        initLanguage() {
-          let lang = CONFIG.langList.indexOf(this.language) >= 0 ? this.language : 'zh-CN';
-          var $vm = this;
-          $vm.$render(CONFIG[`help_${lang}`], function(res) {
-            $vm.d_help = res;
-          })
-          this.d_words = CONFIG[`words_${lang}`];
-        },
-        // 编辑开关
-        editableTextarea() {
-
-        },
-        codeStyleChange(val, isInit) {
-          isInit = isInit ? isInit : false;
-          if (typeof this.p_external_link.hljs_css !== 'function') {
-            if (this.p_external_link.hljs_css != false)
-            { console.error('external_link.hljs_css is not a function, if you want to disabled this error log, set external_link.hljs_css to function or false'); }
+            const scrollTopNumber = Math.round((spPreview.scrollTop + spPreview.clientHeight) * txtMain.scrollHeight  / spPreview.scrollHeight - txtMain.clientHeight);
+            // console.log(scrollTopNumber)
+            this.codemirror.scrollTo(null, scrollTopNumber)
+            // txtMain.scrollTop = scrollTop
             return;
           }
-          var url = this.p_external_link.hljs_css(val);
-          if (url.length === 0 && isInit) {
-            console.warn('hljs color scheme', val, 'do not exist, loading default github');
-            url = this.p_external_link.hljs_css('github')
-          }
-          if (url.length > 0) {
-            loadLink(url)
-          } else {
-            console.warn('hljs color scheme', val, 'do not exist, hljs color scheme will not change');
-          }
-        },
-        // iRender(toggleChange) {
-        //     var $vm = this;
-        //     this.$render($vm.d_value, function(res) {
-        //         console.log(res)
-        //         // render
-        //         $vm.d_render = res;
-        //         // change回调  toggleChange == false 时候触发change回调
-        //         if (!toggleChange)
-        //         {
-        //             if ($vm.change) $vm.change($vm.d_value, $vm.d_render);
-        //         }
-        //         // 改变标题导航
-        //         if ($vm.s_navigation) getNavigation($vm, false);
-        //         // v-model 语法糖
-        //         $vm.$emit('input', $vm.d_value)
-        //         // 塞入编辑记录数组
-        //         if ($vm.d_value === $vm.d_history[$vm.d_history_index]) return
-        //         window.clearTimeout($vm.currentTimeout)
-        //         $vm.currentTimeout = setTimeout(() => {
-        //             $vm.saveHistory();
-        //         }, 500);
-        //     })
-        // },
-        optimizationTag(arr, tag) {
-          const sleep = time => new Promise(resolve => setTimeout(resolve, time))
-          const updateSrc = async (idx = 0) => {
-            let allTag = this.$refs.vShowContent.querySelectorAll(tag)
-            if (!allTag) return
-            await sleep(300)
-            let len = allTag.length
-            if (idx >= len) return false
-            else {
-            // console.log(idx)
-              let el = allTag[idx]
-              el.setAttribute('src', arr[idx])
-              // iframe onload after set next iframe src
-              if (el.attachEvent) el.attachEvent('onload', () => updateSrc(++idx))
-              else el.onload = () => updateSrc(++idx)
-            }
-          }
-          updateSrc()
-        },
-        getTagSrcArrAndRemoveTagSrc(res, tag) {
-          try {
-            let divDom = document.createElement('div')
-            divDom.innerHTML = res
-            let allTag = divDom.querySelectorAll(tag)
-            let srcArr = []
-            let result = ''
-            allTag.forEach((el, i) => {
-              srcArr.push(el.getAttribute('src'))
-              el.setAttribute('src', '')
-            })
-            return {result: divDom.innerHTML, srcArr}
-          } catch (error) {
-            return {result: '', srcArr: []}
-          }
-        },
-        // 添加防抖 渲染内容
-        iRender: debounce(function (toggleChange) {
-          var $vm = this;
-          this.$render($vm.d_value, function(res) {
-          // render
-            let { result, srcArr } = $vm.getTagSrcArrAndRemoveTagSrc(res, 'iframe')
-            // console.log(result, srcArr)
-            $vm.d_render = result;
+          if (who === 'main') {
+            // 如果在写的时候 编辑区域不允许对照滚动 防止飘
+            if (this.scrollSwitch) return
 
-            $vm.$nextTick(() => {
-              clearTimeout($vm.timer)
-              $vm.timer = setTimeout(() => {
-              // console.log('数组没有数据可供修改')
-                if (srcArr.length <= 0) return
-                $vm.optimizationTag(srcArr, 'iframe')
-              }, 1600)
-            })
-            // $vm.nowTime = Date.now()
-
-            // console.log($vm.$refs.vShowContent)
-            // change回调  toggleChange == false 时候触发change回调
-            if (!toggleChange)
-            {
-              if ($vm.change) $vm.change($vm.d_value, $vm.d_render);
-            }
-            // 改变标题导航
-            if ($vm.s_navigation) getNavigation($vm, false);
-            // v-model 语法糖
-            $vm.$emit('input', $vm.d_value)
-            // 塞入编辑记录数组
-            if ($vm.d_value === $vm.d_history[$vm.d_history_index]) return
-            window.clearTimeout($vm.currentTimeout)
-            $vm.currentTimeout = setTimeout(() => {
-              $vm.saveHistory();
-            }, 500);
-          },
-          $vm.read_tags_display_mode
-          )
-        }, 500),
-        // 清空上一步 下一步缓存
-        $emptyHistory() {
-          this.d_history = [this.d_value] // 编辑记录
-          this.d_history_index = 0 // 编辑记录索引
-        },
-        // 添加padding
-        setCodeMirrorLineStyle() {
-          try {
-            let editor = this.codemirror
-            let countLine = editor.lineCount()
-            let dom = document.querySelector('.CodeMirror-lines')
-            let wrapper = document.querySelector('.v-note-wrapper')
-            if (!dom || !wrapper) return
-
-            let clientHeight = wrapper.clientHeight || wrapper.offsetHeight
-            let clientWidth = wrapper.clientWidth || wrapper.offsetWidth
-
-            if (countLine > 1) {
-              // 如果小屏幕  62(40 + 22) 大屏幕 88 (40 + 26 + 22)
-              dom.style.paddingBottom =  clientHeight - (clientWidth < 768 ? 62 : 88) + 'px';
-            } else {
-              dom.style.paddingBottom = '0px'
-            }
-          } catch (e) {
-            console.log(e)
-          }
-        },
-        // 更新 status
-        updateStatusBar () {
-          if (this.isMiniScreen()) return
-
-          try {
-            let editor = this.codemirror
-            let cursor = editor.getCursor()
-
-            this.statusBar.line = cursor.line + 1
-
-            this.statusBar.column = cursor.ch + 1
-
-            let select = editor.getSelection()
-            this.statusBar.select = select ? editor.getSelection().split('\n').length : 0
-
-            this.statusBar.count = editor.lineCount()
-          } catch (e) {
-            console.log(e)
-          }
-        },
-        // emoji
-        editorEmoji(cm) {
-          if (this.isMiniScreen()) return
-
-          try {
-            // todo 目前只做了 emoji 的 base 等待扩展
-
-            // emoji
-            // console.log(cm)
-            // console.log(cm.getCursor())
-            // console.log(cm.getDoc().getCursor())
-            let cursor = cm.getCursor()
-            let cursorValue = cm.getLine(cursor.line)
-            let cursorValueLen = cursorValue.length
-            let cursorValueText = cursorValue.slice(cursorValueLen - 2)
-
-            // console.log(cursorValue)
-            // console.log(cursorValueText)
-            var options = {
-              hint: function() {
-                return {
-                  from: cm.getDoc().getCursor(),
-                  to: cm.getDoc().getCursor(),
-                  list: [
-                    {
-                      text: 'smile: ',
-                      displayText: '😄 smile'
-                    },
-                    {
-                      text: 'smiley: ',
-                      displayText: '😃 smiley'
-                    }
-                  ]
-                }
-              }
+            mainFlag = true;
+            if (preFlag === true) { // 抵消两个滚动事件之间互相触发
+              mainFlag = false;
+              preFlag = false;
+              return;
             }
 
-            // 当前行已经有了:x: / :+空格
-            if (cursorValueText === ': ') {
+            // 判断到达顶部
+            if (scrollInfo.top <= 0) {
+              // setPreview(spPreview, 0)
+              spPreview.scrollTop = 0
               return
             }
 
-            // 顶头+:  空格+:
-            // x+空格+:
-            if (cursorValue.trim() === ':' || cursorValueText.trim() === ':') {
-              cm.showHint(options)
+            // 判断到达底部
+            if (scrollInfo.top >= (scrollInfo.height - scrollInfo.clientHeight)) {
+              let scrollTop = spPreview.scrollHeight
+              // setPreview(spPreview, scrollTop)
+              spPreview.scrollTop = spPreview.scrollHeight
+              return
             }
-          } catch (e) {
-            console.log(e)
-          }
-        },
-        // 聚焦滚动
-        focusScroll(cm) {
-          if (!this.isMiniScreen()) return
-          try {
-            let cursor = cm.getCursor()
-            let count = cursor.line
-    
-            let len = 0 // 统计高度
-            for (let i = 0; i < count; i++) {
-              len += cm.getLineHandle(i).height
-            }
-            let currentLineHeight = cm.getLineHandle(count).height
 
-            // 如果行高大于 8 行 小于或等于 10 行 8 * 22
-            if (currentLineHeight > 176 && currentLineHeight <= 220) {
-              // 留 两行 当前元素的一半
-              cm.scrollTo(0, len - 44)
-              // 大于 十行
-            } else if (currentLineHeight > 220) {
-              let lineVal = cm.getLine(cursor.line)
+            // console.log('main??', scrollInfo)
 
-              let lineValLen = lineVal.length // 一行多少字
+            const scrollTopNumber = Math.round((txtMain.scrollTop + txtMain.clientHeight) * spPreview.scrollHeight / txtMain.scrollHeight - spPreview.clientHeight);
 
-              let lineLine = currentLineHeight / 22 // 一行的一行有多少行
-    
-              let textLineSize = Math.round(lineValLen / lineLine) // 文字平均多少行
-
-              let chInLine = Math.floor(cursor.ch / textLineSize) // 当前ch大约在多少行
-
-              let offsetHeight = chInLine * 22 // 大概的行数高度
-
-              cm.scrollTo(0, len + offsetHeight - 88)
-            } else {
-              // 留空四行 4 * 22
-              cm.scrollTo(0, len - 88)
-            }
-          } catch (e) {
-            console.log(e)
-          }
-        },
-        onCursorActivity(cm) {
-          this.updateStatusBar()
-          this.editorEmoji(cm)
-          this.focusScroll(cm)
-        },
-        onBeforeSelectionChange(cm) {
-          this.updateStatusBar()
-        },
-        onChanges(cm) {
-          this.updateStatusBar()
-          this.setCodeMirrorLineStyle()
-          this.focusScroll(cm)
-          // 锁定 scrollSwitch
-          this.scrollSwitch = true
-        },
-        onReady(cm) {
-          this.bindScroll()
-          this.setCodeMirrorLineStyle()
-          window.cm = cm
-        },
-        // 如果是小屏幕 768
-        isMiniScreen() {
-          try {
-            let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
-            return clientWidth < 768
-          } catch (e) {
-            console.log(e)
-            return false
+            spPreview.scrollTop = scrollTopNumber
           }
         }
+
+        const mainOnscroll = () => {
+          if (this.isMiniScreen()) return
+
+          // 重置滚动状态
+          this.scrollSwitch = false
+
+          scrolling('main');
+        }
+
+        const preOnscroll = () => {
+          if (this.isMiniScreen()) return
+
+          scrolling('pre');
+        }
+
+        try {
+          if (txtMain) {
+            txtMain.addEventListener('scroll', throttle(mainOnscroll, 5))
+          }
+
+          if (spPreview) {
+            spPreview.addEventListener('scroll', throttle(preOnscroll, 5))
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+
+      function cycle() {
+        scrollEvent();
+        // $(EXPAND_FEATURE).on('click', scrollEvent);
+        // $(COMPRESS_FEATURE).on('click', scrollEvent);
+        // $(SWITCH_FEATURE).on("click", scrollEvent);
+
+        // window.setTimeout(cycle, 1000);
+      }
+
+      cycle();
+    },
+    // 试试hackmd
+    autoSyncscroll () {
+      let getInput = $('.CodeMirror-scroll');
+      let getPreview = $('#previewContent');
+
+      setupSyncAreas(getInput, getPreview, getPreview, this.codemirror)
+    },
+    // 工具栏插入内容
+    insertText(obj, {prefix, subfix, str, type}) {
+      // if (this.s_preview_switch) {
+
+      insertTextAtCaret(obj, {prefix, subfix, str, type}, this);
+    },
+    insertTab() {
+      insertTab(this, this.tabSize)
+    },
+    insertOl() {
+      insertOl(this)
+    },
+    removeLine() {
+      removeLine(this)
+    },
+    insertUl() {
+      insertUl(this)
+    },
+    unInsertTab() {
+      unInsertTab(this, this.tabSize)
+    },
+    insertEnter(event) {
+      insertEnter(this, event)
+    },
+    saveHistory() {
+      this.d_history.splice(this.d_history_index + 1, this.d_history.length)
+      this.d_history.push(this.d_value)
+      this.d_history_index = this.d_history.length - 1
+    },
+    initLanguage() {
+      let lang = CONFIG.langList.indexOf(this.language) >= 0 ? this.language : 'zh-CN';
+      var $vm = this;
+      $vm.$render(CONFIG[`help_${lang}`], function(res) {
+        $vm.d_help = res;
+      })
+      this.d_words = CONFIG[`words_${lang}`];
+    },
+    // 编辑开关
+    editableTextarea() {
+
+    },
+    codeStyleChange(val, isInit) {
+      isInit = isInit ? isInit : false;
+      if (typeof this.p_external_link.hljs_css !== 'function') {
+        if (this.p_external_link.hljs_css != false)
+        { console.error('external_link.hljs_css is not a function, if you want to disabled this error log, set external_link.hljs_css to function or false'); }
+        return;
+      }
+      var url = this.p_external_link.hljs_css(val);
+      if (url.length === 0 && isInit) {
+        console.warn('hljs color scheme', val, 'do not exist, loading default github');
+        url = this.p_external_link.hljs_css('github')
+      }
+      if (url.length > 0) {
+        loadLink(url)
+      } else {
+        console.warn('hljs color scheme', val, 'do not exist, hljs color scheme will not change');
+      }
+    },
+    // iRender(toggleChange) {
+    //     var $vm = this;
+    //     this.$render($vm.d_value, function(res) {
+    //         console.log(res)
+    //         // render
+    //         $vm.d_render = res;
+    //         // change回调  toggleChange == false 时候触发change回调
+    //         if (!toggleChange)
+    //         {
+    //             if ($vm.change) $vm.change($vm.d_value, $vm.d_render);
+    //         }
+    //         // 改变标题导航
+    //         if ($vm.s_navigation) getNavigation($vm, false);
+    //         // v-model 语法糖
+    //         $vm.$emit('input', $vm.d_value)
+    //         // 塞入编辑记录数组
+    //         if ($vm.d_value === $vm.d_history[$vm.d_history_index]) return
+    //         window.clearTimeout($vm.currentTimeout)
+    //         $vm.currentTimeout = setTimeout(() => {
+    //             $vm.saveHistory();
+    //         }, 500);
+    //     })
+    // },
+    optimizationTag(arr, tag) {
+      const sleep = time => new Promise(resolve => setTimeout(resolve, time))
+      const updateSrc = async (idx = 0) => {
+        let allTag = this.$refs.vShowContent.querySelectorAll(tag)
+        if (!allTag) return
+        await sleep(300)
+        let len = allTag.length
+        if (idx >= len) return false
+        else {
+          // console.log(idx)
+          let el = allTag[idx]
+          el.setAttribute('src', arr[idx])
+          // iframe onload after set next iframe src
+          if (el.attachEvent) el.attachEvent('onload', () => updateSrc(++idx))
+          else el.onload = () => updateSrc(++idx)
+        }
+      }
+      updateSrc()
+    },
+    getTagSrcArrAndRemoveTagSrc(res, tag) {
+      try {
+        let divDom = document.createElement('div')
+        divDom.innerHTML = res
+        let allTag = divDom.querySelectorAll(tag)
+        let srcArr = []
+        let result = ''
+        allTag.forEach((el, i) => {
+          srcArr.push(el.getAttribute('src'))
+          el.setAttribute('src', '')
+        })
+        return {result: divDom.innerHTML, srcArr}
+      } catch (error) {
+        return {result: '', srcArr: []}
+      }
+    },
+    // 添加防抖 渲染内容
+    iRender: debounce(function (toggleChange) {
+      var $vm = this;
+      this.$render($vm.d_value, function(res) {
+        // render
+        let { result, srcArr } = $vm.getTagSrcArrAndRemoveTagSrc(res, 'iframe')
+        // console.log(result, srcArr)
+        $vm.d_render = result;
+
+        $vm.$nextTick(() => {
+          clearTimeout($vm.timer)
+          $vm.timer = setTimeout(() => {
+            // console.log('数组没有数据可供修改')
+            if (srcArr.length <= 0) return
+            $vm.optimizationTag(srcArr, 'iframe')
+          }, 1600)
+        })
+        // $vm.nowTime = Date.now()
+
+        // console.log($vm.$refs.vShowContent)
+        // change回调  toggleChange == false 时候触发change回调
+        if (!toggleChange)
+        {
+          if ($vm.change) $vm.change($vm.d_value, $vm.d_render);
+        }
+        // 改变标题导航
+        if ($vm.s_navigation) getNavigation($vm, false);
+        // v-model 语法糖
+        $vm.$emit('input', $vm.d_value)
+        // 塞入编辑记录数组
+        if ($vm.d_value === $vm.d_history[$vm.d_history_index]) return
+        window.clearTimeout($vm.currentTimeout)
+        $vm.currentTimeout = setTimeout(() => {
+          $vm.saveHistory();
+        }, 500);
+      }, $vm.read_tags_display_mode)
+    }, 500),
+    // 清空上一步 下一步缓存
+    $emptyHistory() {
+      this.d_history = [this.d_value] // 编辑记录
+      this.d_history_index = 0 // 编辑记录索引
+    },
+    // 添加padding
+    setCodeMirrorLineStyle() {
+      try {
+        let editor = this.codemirror
+        let countLine = editor.lineCount()
+        let dom = document.querySelector('.CodeMirror-lines')
+        let wrapper = document.querySelector('.v-note-wrapper')
+        if (!dom || !wrapper) return
+
+        let clientHeight = wrapper.clientHeight || wrapper.offsetHeight
+        let clientWidth = wrapper.clientWidth || wrapper.offsetWidth
+
+        if (countLine > 1) {
+          // 如果小屏幕  62(40 + 22) 大屏幕 88 (40 + 26 + 22)
+          dom.style.paddingBottom =  clientHeight - (clientWidth < 768 ? 62 : 88) + 'px';
+        } else {
+          dom.style.paddingBottom = '0px'
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 更新 status
+    updateStatusBar () {
+      if (this.isMiniScreen()) return
+
+      try {
+        let editor = this.codemirror
+        let cursor = editor.getCursor()
+
+        this.statusBar.line = cursor.line + 1
+
+        this.statusBar.column = cursor.ch + 1
+
+        let select = editor.getSelection()
+        this.statusBar.select = select ? editor.getSelection().split('\n').length : 0
+
+        this.statusBar.count = editor.lineCount()
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // emoji
+    editorEmoji(cm) {
+      if (this.isMiniScreen()) return
+
+      try {
+        // todo 目前只做了 emoji 的 base 等待扩展
+
+        // emoji
+        // console.log(cm)
+        // console.log(cm.getCursor())
+        // console.log(cm.getDoc().getCursor())
+        let cursor = cm.getCursor()
+        let cursorValue = cm.getLine(cursor.line)
+        let cursorValueLen = cursorValue.length
+        let cursorValueText = cursorValue.slice(cursorValueLen - 2)
+
+        // console.log(cursorValue)
+        // console.log(cursorValueText)
+        var options = {
+          hint: function() {
+            return {
+              from: cm.getDoc().getCursor(),
+              to: cm.getDoc().getCursor(),
+              list: [
+                {
+                  text: 'smile: ',
+                  displayText: '😄 smile'
+                },
+                {
+                  text: 'smiley: ',
+                  displayText: '😃 smiley'
+                }
+              ]
+            }
+          }
+        }
+
+        // 当前行已经有了:x: / :+空格
+        if (cursorValueText === ': ') {
+          return
+        }
+
+        // 顶头+:  空格+:
+        // x+空格+:
+        if (cursorValue.trim() === ':' || cursorValueText.trim() === ':') {
+          cm.showHint(options)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 聚焦滚动
+    focusScroll(cm) {
+      if (!this.isMiniScreen()) return
+      try {
+        let cursor = cm.getCursor()
+        let count = cursor.line
+
+        let len = 0 // 统计高度
+        for (let i = 0; i < count; i++) {
+          len += cm.getLineHandle(i).height
+        }
+        let currentLineHeight = cm.getLineHandle(count).height
+
+        // 如果行高大于 8 行 小于或等于 10 行 8 * 22
+        if (currentLineHeight > 176 && currentLineHeight <= 220) {
+          // 留 两行 当前元素的一半
+          cm.scrollTo(0, len - 44)
+          // 大于 十行
+        } else if (currentLineHeight > 220) {
+          let lineVal = cm.getLine(cursor.line)
+
+          let lineValLen = lineVal.length // 一行多少字
+
+          let lineLine = currentLineHeight / 22 // 一行的一行有多少行
+
+          let textLineSize = Math.round(lineValLen / lineLine) // 文字平均多少行
+
+          let chInLine = Math.floor(cursor.ch / textLineSize) // 当前ch大约在多少行
+
+          let offsetHeight = chInLine * 22 // 大概的行数高度
+
+          cm.scrollTo(0, len + offsetHeight - 88)
+        } else {
+          // 留空四行 4 * 22
+          cm.scrollTo(0, len - 88)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    onCursorActivity(cm) {
+      this.updateStatusBar()
+      // this.editorEmoji(cm)
+      this.focusScroll(cm)
+    },
+    onBeforeSelectionChange(cm) {
+      this.updateStatusBar()
+    },
+    onChanges(cm) {
+      this.updateStatusBar()
+      this.setCodeMirrorLineStyle()
+      this.focusScroll(cm)
+      // 锁定 scrollSwitch
+      this.scrollSwitch = true
+
+      // finishView($('#previewContent'))
+      clearTimeout(this.editorChangeTimer)
+      this.editorChangeTimer = setTimeout(() => {
+        clearMap()
+        syncScrollToView()
+        // $('.CodeMirror-scroll').scroll()
+      }, 1000)
+    },
+    onReady(cm) {
+      // this.bindScroll()
+      this.autoSyncscroll()
+      this.setCodeMirrorLineStyle()
+      this.textComplete(cm)
+      window.cm = cm
+    },
+    // 如果是小屏幕 768
+    isMiniScreen() {
+      try {
+        let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+        return clientWidth < 768
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    },
+    textComplete(cm) {
+      console.log(cm.getInputField())
+    }
   },
   computed: {
-        codemirror() {
-          window.codemirror = this.$refs.myCm.codemirror
-          return this.$refs.myCm.codemirror
-        }
+    codemirror() {
+      window.codemirror = this.$refs.myCm.codemirror
+      return this.$refs.myCm.codemirror
+    }
   },
   watch: {
-        d_value: function (val, oldVal) {
-          this.iRender();
-        },
-        value: function (val, oldVal) {
-          if (val !== this.d_value) {
-            this.d_value = val
-          }
-        },
-        subfield: function (val, oldVal) {
-          this.s_subfield = val
-        },
-        d_history_index() {
-          if (this.d_history_index > 20) {
-            this.d_history.shift()
-            this.d_history_index = this.d_history_index - 1
-          }
-          this.d_value = this.d_history[this.d_history_index]
-        },
-        language: function (val) {
-          this.initLanguage();
-        },
-        defaultOpen: function (val) {
-          let default_open_ = val;
-          if (!default_open_) {
-            default_open_ = this.subfield ? 'preview' : 'edit';
-          }
-          return this.s_preview_switch = default_open_ === 'preview' ? true : false;
-        },
-        codeStyle: function (val) {
-          this.codeStyleChange(val)
-        }
+    d_value: function (val, oldVal) {
+      this.iRender();
+    },
+    value: function (val, oldVal) {
+      if (val !== this.d_value) {
+        this.d_value = val
+      }
+    },
+    subfield: function (val, oldVal) {
+      this.s_subfield = val
+    },
+    d_history_index() {
+      if (this.d_history_index > 20) {
+        this.d_history.shift()
+        this.d_history_index = this.d_history_index - 1
+      }
+      this.d_value = this.d_history[this.d_history_index]
+    },
+    language: function (val) {
+      this.initLanguage();
+    },
+    defaultOpen: function (val) {
+      let default_open_ = val;
+      if (!default_open_) {
+        default_open_ = this.subfield ? 'preview' : 'edit';
+      }
+      return this.s_preview_switch = default_open_ === 'preview' ? true : false;
+    },
+    codeStyle: function (val) {
+      this.codeStyleChange(val)
+    }
   }
 };
 </script>
@@ -1583,6 +1613,7 @@ export default {
 @import 'lib/css/mavon-editor.styl';
 @import 'lib/css/mavon-editor_new.styl';
 </style>
+
 <style lang="css" scoped>
 .auto-textarea-wrapper {
   height: 100%;
@@ -1609,8 +1640,102 @@ export default {
     font-size: 16px;
   }
 }
+
 </style>
-<style lang="css">
+
+<style lang="less">
+.codemirror-editor /deep/ .CodeMirror {
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,0.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box
+}
+
+.dropdown-menu.pull-right {
+    right: 0;
+    left: auto
+}
+
+.dropdown-menu .divider {
+    *width: 100%;
+    height: 1px;
+    margin: 9px 1px;
+    *margin: -5px 0 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #fff
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 20px;
+    color: #333;
+    white-space: nowrap
+}
+
+.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-submenu:hover>a,.dropdown-submenu:focus>a {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top,#08c,#0077b3);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));
+    background-image: -webkit-linear-gradient(top,#08c,#0077b3);
+    background-image: -o-linear-gradient(top,#08c,#0077b3);
+    background-image: linear-gradient(to bottom,#08c,#0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)
+}
+
+.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top,#08c,#0077b3);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));
+    background-image: -webkit-linear-gradient(top,#08c,#0077b3);
+    background-image: -o-linear-gradient(top,#08c,#0077b3);
+    background-image: linear-gradient(to bottom,#08c,#0077b3);
+    background-repeat: repeat-x;
+    outline: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)
+}
+
+.dropdown-menu>.disabled>a,.dropdown-menu>.disabled>a:hover,.dropdown-menu>.disabled>a:focus {
+    color: #999
+}
+
+.dropdown-menu>.disabled>a:hover,.dropdown-menu>.disabled>a:focus {
+    text-decoration: none;
+    cursor: default;
+    background-color: transparent;
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
+}
+}
 </style>
 
 

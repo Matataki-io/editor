@@ -1,23 +1,11 @@
 import hljsLangs from '../core/hljs/lang.hljs.js'
-import {
-    loadScript
-} from '../core/extra-function.js'
-import ayncscroll from '../../lib/syncscroll.js'
+import { loadScript } from '../core/extra-function.js'
+import { injectLineNumber } from '../../lib/syncscroll.js'
 
-import {
-    formatReadTags
-} from '../extmarkdown.js'
+import { formatReadTags } from '../extmarkdown.js'
+import { md } from '../extra'
 
-var markdown_config = {
-    html: true,        // Enable HTML tags in source
-    xhtmlOut: true,        // Use '/' to close single tags (<br />).
-    breaks: true,        // Convert '\n' in paragraphs into <br>
-    langPrefix: 'lang-',  // CSS language prefix for fenced blocks. Can be
-    linkify: false,        // 自动识别url
-    typographer: true,
-    quotes: '“”‘’'
-}
-var markdown = require('markdown-it')(markdown_config);
+var markdown = md
 // 表情
 var emoji = require('markdown-it-emoji');
 // 下标
@@ -51,22 +39,22 @@ const miContainer = require('markdown-it-container')
 
 // add target="_blank" to all link
 var defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, env, self) {
-    return self.renderToken(tokens, idx, options);
+  return self.renderToken(tokens, idx, options);
 };
 markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-    var hIndex = tokens[idx].attrIndex('href');
-    if (tokens[idx].attrs[hIndex][1].startsWith('#')) return defaultRender(tokens, idx, options, env, self);
-    // If you are sure other plugins can't add `target` - drop check below
-    var aIndex = tokens[idx].attrIndex('target');
+  var hIndex = tokens[idx].attrIndex('href');
+  if (tokens[idx].attrs[hIndex][1].startsWith('#')) return defaultRender(tokens, idx, options, env, self);
+  // If you are sure other plugins can't add `target` - drop check below
+  var aIndex = tokens[idx].attrIndex('target');
 
-    if (aIndex < 0) {
-        tokens[idx].attrPush(['target', '_blank']); // add new attribute
-    } else {
-        tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
-    }
+  if (aIndex < 0) {
+    tokens[idx].attrPush(['target', '_blank']); // add new attribute
+  } else {
+    tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
+  }
 
-    // pass token to default renderer.
-    return defaultRender(tokens, idx, options, env, self);
+  // pass token to default renderer.
+  return defaultRender(tokens, idx, options, env, self);
 };
 var mihe = require('markdown-it-highlightjs-external');
 // math katex
@@ -75,83 +63,83 @@ var miip = require('markdown-it-images-preview');
 var missLangs = {};
 var needLangs = [];
 var hljs_opts = {
-    hljs: 'auto',
-    highlighted: true,
-    langCheck: function(lang) {
-        if (lang && hljsLangs[lang] && !missLangs[lang]) {
-            missLangs[lang] = 1;
-            needLangs.push(hljsLangs[lang])
-        }
+  hljs: 'auto',
+  highlighted: true,
+  langCheck: function(lang) {
+    if (lang && hljsLangs[lang] && !missLangs[lang]) {
+      missLangs[lang] = 1;
+      needLangs.push(hljsLangs[lang])
     }
+  }
 };
 markdown.use(mihe, hljs_opts)
-    .use(emoji)
-    .use(sup)
-    .use(sub)
-    .use(container)
-    .use(container, 'hljs-left') /* align left */
-    .use(container, 'hljs-center')/* align center */
-    .use(container, 'hljs-right')/* align right */
-    .use(deflist)
-    .use(abbr)
-    .use(footnote)
-    .use(insert)
-    .use(mark)
-    .use(container)
-    .use(miip)
-    .use(katex)
-    .use(taskLists)
-    .use(anchor)
-    .use(tableOfContents, {
-        includeLevel: [1,2,3], // hackmd 也只支持到了h3
-        markerPattern: /^\[toc\]|^\[\[toc\]\]/im // 如果想 支持 [[toc]] [toc] 的话不能添加 $
-    })
-    // .use(toc)
+  .use(emoji)
+  .use(sup)
+  .use(sub)
+  .use(container)
+  .use(container, 'hljs-left') /* align left */
+  .use(container, 'hljs-center')/* align center */
+  .use(container, 'hljs-right')/* align right */
+  .use(deflist)
+  .use(abbr)
+  .use(footnote)
+  .use(insert)
+  .use(mark)
+  .use(container)
+  .use(miip)
+  .use(katex)
+  .use(taskLists)
+  .use(anchor)
+  .use(tableOfContents, {
+    includeLevel: [1,2,3], // hackmd 也只支持到了h3
+    markerPattern: /^\[toc\]|^\[\[toc\]\]/im // 如果想 支持 [[toc]] [toc] 的话不能添加 $
+  })
+// .use(toc)
 
-    ayncscroll(markdown)
+injectLineNumber(markdown)
 
 export default {
-    data() {
-        return {
-            markdownIt: markdown
-        }
-    },
-    mounted() {
-        var $vm = this;
-        hljs_opts.highlighted = this.ishljs;
-    },
-    methods: {
-        $render(src, func, readTagsDisplayMode = 0) {
-            var $vm = this;
-            missLangs = {};
-            needLangs = [];
-            const formatResult = formatReadTags(src, readTagsDisplayMode);
-            var res = markdown.render(formatResult);
-            if (this.ishljs) {
-                if (needLangs.length > 0) {
-                    $vm.$_render(src, func, res);
-                }
-            }
-            func(res);
-        },
-        $_render(src, func, res) {
-            var $vm = this;
-            var deal = 0;
-            for (var i = 0; i < needLangs.length; i++) {
-                var url = $vm.p_external_link.hljs_lang(needLangs[i]);
-                loadScript(url, function() {
-                    deal = deal + 1;
-                    if (deal === needLangs.length) {
-                        res = markdown.render(src);
-                        func(res);
-                    }
-                })
-            }
-        }
-    },
-    watch: {
-        ishljs: function(val) {
-            hljs_opts.highlighted = val;
-        }
+  data() {
+    return {
+      markdownIt: markdown
     }
+  },
+  mounted() {
+    var $vm = this;
+    hljs_opts.highlighted = this.ishljs;
+  },
+  methods: {
+    $render(src, func, readTagsDisplayMode = 0) {
+      var $vm = this;
+      missLangs = {};
+      needLangs = [];
+      const formatResult = formatReadTags(src, readTagsDisplayMode);
+      var res = markdown.render(formatResult);
+      if (this.ishljs) {
+        if (needLangs.length > 0) {
+          $vm.$_render(src, func, res);
+        }
+      }
+      func(res);
+    },
+    $_render(src, func, res) {
+      var $vm = this;
+      var deal = 0;
+      for (var i = 0; i < needLangs.length; i++) {
+        var url = $vm.p_external_link.hljs_lang(needLangs[i]);
+        loadScript(url, function() {
+          deal = deal + 1;
+          if (deal === needLangs.length) {
+            res = markdown.render(src);
+            func(res);
+          }
+        })
+      }
+    }
+  },
+  watch: {
+    ishljs: function(val) {
+      hljs_opts.highlighted = val;
+    }
+  }
 };
