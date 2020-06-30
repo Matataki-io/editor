@@ -267,7 +267,7 @@ function buildMapInner (callback) {
   scrollMap = _scrollMap
   lineHeightMap = _lineHeightMap
 
-  console.log('------', _scrollMap, _lineHeightMap)
+  // console.log('------', _scrollMap, _lineHeightMap)
 
   if (window.loaded && callback) callback()
 }

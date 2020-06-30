@@ -145,7 +145,6 @@
 </template>
 
 <script>
-
 // import tomarkdown from './lib/core/to-markdown.js'
 import {autoTextarea} from 'auto-textarea'
 import {keydownListen} from './lib/core/keydown-listen.js'
@@ -227,8 +226,16 @@ import {toolbar_left_click, toolbar_left_addlink} from './lib/toolbar_left_click
 import { toolbar } from './lib/toolbar'
 import {toolbar_right_click} from './lib/toolbar_right_click.js'
 import {CONFIG} from './lib/config.js'
-import hljs from './lib/core/highlight.js'
+
 import markdown from './lib/mixins/markdown.js'
+import hljs from './lib/core/highlight.js'
+import 'highlight.js/styles/github-gist.css'
+import "./lib/font/css/fontello.css"
+import './lib/css/md.css'
+import './lib/css/markdown.css'
+import './lib/css/slide.css'
+
+import { textcomplete } from './lib/index.js'
 
 import md_toolbar from './components/md-toolbar.vue'
 import md_toolbar_mobile from './components/md-toolbar-mobile.vue'
@@ -236,8 +243,7 @@ import md_toolbar_view_mobile from './components/md-toolbar-view-mobile.vue'
 import md_toolbar_left from './components/md-toolbar-left.vue'
 import md_toolbar_right from './components/md-toolbar-right.vue'
 import md_head_toolbar_right from './components/md-head-toolbar-right.vue'
-import "./lib/font/css/fontello.css"
-import './lib/css/md.css'
+
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import anime from 'animejs/lib/anime.es.js';
@@ -1358,6 +1364,8 @@ export default {
         $vm.d_render = result;
 
         $vm.$nextTick(() => {
+          finishView($('#previewContent'))
+
           clearTimeout($vm.timer)
           $vm.timer = setTimeout(() => {
             // console.log('数组没有数据可供修改')
@@ -1538,7 +1546,6 @@ export default {
       // 锁定 scrollSwitch
       this.scrollSwitch = true
 
-      // finishView($('#previewContent'))
       clearTimeout(this.editorChangeTimer)
       this.editorChangeTimer = setTimeout(() => {
         clearMap()
@@ -1564,7 +1571,7 @@ export default {
       }
     },
     textComplete(cm) {
-      console.log(cm.getInputField())
+      textcomplete(cm)
     }
   },
   computed: {

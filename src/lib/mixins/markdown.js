@@ -56,7 +56,7 @@ markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   // pass token to default renderer.
   return defaultRender(tokens, idx, options, env, self);
 };
-var mihe = require('markdown-it-highlightjs-external');
+// var mihe = require('markdown-it-highlightjs-external');
 // math katex
 var katex = require('markdown-it-katex-external');
 var miip = require('markdown-it-images-preview');
@@ -72,7 +72,9 @@ var hljs_opts = {
     }
   }
 };
-markdown.use(mihe, hljs_opts)
+
+// use(mihe, hljs_opts)
+markdown
   .use(emoji)
   .use(sup)
   .use(sub)

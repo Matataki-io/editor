@@ -116,6 +116,13 @@ module.exports = {
       },{
         test: /\.less$/,
         loader: 'style-loader!css-loader!less-loader'
+      },
+      {
+        test: require.resolve('jquery'),
+        loader: 'expose-loader',
+        options: {
+          exposes: ['$', 'jQuery']
+        }
       }
     ]
   },
@@ -143,6 +150,11 @@ module.exports = {
     }, {
       from: path.resolve(__dirname, '../node_modules/katex/dist'),
       to: path.resolve(__dirname, '../dist/katex')
-    }])
+    }]),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    })
   ]
 }

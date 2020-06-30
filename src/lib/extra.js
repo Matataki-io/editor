@@ -1,11 +1,17 @@
-import hljs from 'highlight.js'
+// import hljs from 'highlight.js'
 import unescapeHTML from 'lodash/unescape'
 import Prism from 'prismjs'
 import escapeHTML from 'lodash/escape'
+import PDFObject from 'pdfobject'
+import isURL from 'validator/lib/isURL'
+import Plugin from 'markdown-it-regexp'
+
+// import flowchart from 'flowchart.js'
+// let viz = new Viz()
+
+var hljs = require('highlight.js');
 
 function highlightRender (code, lang) {
-  console.log('highlightRender', code, lang)
-
   if (!lang || /no(-?)highlight|plain|text/.test(lang)) { return }
   function parseFenceCodeParams (lang) {
     const attrMatch = lang.match(/{(.*)}/)
@@ -88,18 +94,162 @@ function highlightRender (code, lang) {
   return result.value
 }
 
-export const md = require('markdown-it')({
+const md = require('markdown-it')({
   html: true,        // Enable HTML tags in source
   xhtmlOut: true,        // Use '/' to close single tags (<br />).
   breaks: true,        // Convert '\n' in paragraphs into <br>
   langPrefix: '',  // CSS language prefix for fenced blocks. Can be
   linkify: false,        // 自动识别url
   typographer: true,
-  quotes: '“”‘’'
+  quotes: '“”‘’',
+  highlight: highlightRender
 });
+
+// pdf
+const pdfPlugin = new Plugin(
+  // regexp to match
+  /{%pdf\s*([\d\D]*?)\s*%}/,
+
+  (match, utils) => {
+    const pdfurl = match[1]
+    if (!isURL(pdfurl)) return match[0]
+    const div = $('<div class="pdf raw"></div>')
+    div.attr('data-pdfurl', pdfurl)
+    return div[0].outerHTML
+  }
+)
+md.use(pdfPlugin)
+
+export {
+  md
+}
+
+// regex for extra tags
+const spaceregex = /\s*/
+const notinhtmltagregex = /(?![^<]*>|[^<>]*<\/)/
+let coloregex = /\[color=([#|(|)|\s|,|\w]*?)\]/
+coloregex = new RegExp(coloregex.source + notinhtmltagregex.source, 'g')
+let nameregex = /\[name=(.*?)\]/
+let timeregex = /\[time=([:|,|+|-|(|)|\s|\w]*?)\]/
+const nameandtimeregex = new RegExp(nameregex.source + spaceregex.source + timeregex.source + notinhtmltagregex.source, 'g')
+nameregex = new RegExp(nameregex.source + notinhtmltagregex.source, 'g')
+timeregex = new RegExp(timeregex.source + notinhtmltagregex.source, 'g')
+
+function replaceExtraTags (html) {
+  html = html.replace(coloregex, '<span class="color" data-color="$1"></span>')
+  html = html.replace(nameandtimeregex, '<small><i class="fa fa-user"></i> $1 <i class="fa fa-clock-o"></i> $2</small>')
+  html = html.replace(nameregex, '<small><i class="fa fa-user"></i> $1</small>')
+  html = html.replace(timeregex, '<small><i class="fa fa-clock-o"></i> $1</small>')
+  return html
+}
 
 // dynamic event or object binding here
 export function finishView (view) {
+  // blockquote
+  const blockquote = view.find('blockquote.raw').removeClass('raw')
+  const blockquoteP = blockquote.find('p')
+  blockquoteP.each((key, value) => {
+    let html = $(value).html()
+    html = replaceExtraTags(html)
+    $(value).html(html)
+  })
+  // color tag in blockquote will change its left border color
+  const blockquoteColor = blockquote.find('.color')
+  blockquoteColor.each((key, value) => {
+    $(value).closest('blockquote').css('border-left-color', $(value).attr('data-color'))
+  })
+
+  // TODO:
+  // sequence diagram
+  // const sequences = view.find('div.sequence-diagram.raw').removeClass('raw')
+  // sequences.each((key, value) => {
+  //   try {
+  //     var $value = $(value)
+  //     const $ele = $(value).parent().parent()
+
+  //     const sequence = $value
+  //     sequence.sequenceDiagram({
+  //       theme: 'simple'
+  //     })
+
+  //     $ele.addClass('sequence-diagram')
+  //     $value.children().unwrap().unwrap()
+  //     const svg = $ele.find('> svg')
+  //     svg[0].setAttribute('viewBox', `0 0 ${svg.attr('width')} ${svg.attr('height')}`)
+  //     svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet')
+  //   } catch (err) {
+  //     $value.unwrap()
+  //     $value.parent().append(`<div class="alert alert-warning">${escapeHTML(err)}</div>`)
+  //     console.warn(err)
+  //   }
+  // })
+
+  // flowchart
+  // const flow = view.find('div.flow-chart.raw').removeClass('raw')
+  // flow.each((key, value) => {
+  //   try {
+  //     var $value = $(value)
+  //     const $ele = $(value).parent().parent()
+
+  //     const chart = flowchart.parse($value.text())
+  //     $value.html('')
+  //     chart.drawSVG(value, {
+  //       'line-width': 2,
+  //       fill: 'none',
+  //       'font-size': '16px',
+  //       'font-family': "'Andale Mono', monospace"
+  //     })
+
+  //     $ele.addClass('flow-chart')
+  //     $value.children().unwrap().unwrap()
+  //   } catch (err) {
+  //     $value.unwrap()
+  //     $value.parent().append(`<div class="alert alert-warning">${escapeHTML(err)}</div>`)
+  //     console.warn(err)
+  //   }
+  // })
+  // TODO:
+  // graphviz
+  // var graphvizs = view.find('div.graphviz.raw').removeClass('raw')
+  // graphvizs.each(function (key, value) {
+  //   try {
+  //     var $value = $(value)
+  //     var $ele = $(value).parent().parent()
+  //     $value.unwrap()
+  //     viz.renderString($value.text())
+  //       .then(graphviz => {
+  //         if (!graphviz) throw Error('viz.js output empty graph')
+  //         $value.html(graphviz)
+
+  //         $ele.addClass('graphviz')
+  //         $value.children().unwrap()
+  //       })
+  //       .catch(err => {
+  //         viz = new Viz()
+  //         $value.parent().append(`<div class="alert alert-warning">${escapeHTML(err)}</div>`)
+  //         console.warn(err)
+  //       })
+  //   } catch (err) {
+  //     viz = new Viz()
+  //     $value.parent().append(`<div class="alert alert-warning">${escapeHTML(err)}</div>`)
+  //     console.warn(err)
+  //   }
+  // })
+
+  // pdf
+  view.find('div.pdf.raw').removeClass('raw')
+    .each(function (key, value) {
+      const url = $(value).attr('data-pdfurl')
+      // 修改
+      const inner = $('<div></div>')
+      const pdfDiv = document.createElement('div')
+      // 修改 end
+      $(this).append(pdfDiv)
+      PDFObject.embed(url, pdfDiv, {
+        height: '400px'
+      })
+    })
+
   // syntax highlighting
   view.find('code.raw').removeClass('raw')
     .each((key, value) => {
