@@ -1,147 +1,153 @@
 <template>
-    <div class="v-note-wrapper">
-        <!--编辑展示区域-->
-        <div class="v-note-panel">
-            <!--编辑区-->
-            <!-- @scroll="$v_edit_scroll" -->
-            <div ref="vNoteEdit" class="v-note-edit divarea-wrapper"
-                :class="{
-                    'scroll-style': s_scrollStyle, 
-                    'scroll-style-border-radius': s_scrollStyle && !s_preview_switch && !s_html_code, 
-                    'single-edit': !s_preview_switch && !s_html_code, 
-                    'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code), 
-                    'transition': transition}"
-            >
-                <!--工具栏-->
-                <div class="v-note-op edit-toolbar" v-show="toolbarsFlag">
-                    <v-md-toolbar 
-                        ref="toolbar_left" 
-                        :transition="transition" 
-                        :d_words="d_words"
-                        @toolbar_left_click="toolbar_left_click"
-                        @toolbar_left_addlink="toolbar_left_addlink" 
-                        @toolbar_toggle_click="toolbar_toggle_click"
-                        @read_tags_display_mode="read_tags_mode_click"
-                        @imageMultipleUpload="imageMultipleUpload"
-                        :toolbars="toolbars"
-                        @imgDel="$imgDel" 
-                        @imgTouch="$imgTouch" 
-                        :image_filter="imageFilter"
-                        :imageUploadAction="imageUploadAction"
-                        :imageUploadFn="imageUploadFn"
-                        :encryption="encryption"
-                        >
-                        <slot name="left-toolbar-before" slot="left-toolbar-before" />
-                        <slot name="left-toolbar-after" slot="left-toolbar-after" />
-                    </v-md-toolbar>
-                </div>
-                <div class="edit-content">
-                    <div class="content-input-wrapper">
-                        <!-- 双栏 -->
-                        <!-- @scroll="$v_edit_scroll__left" -->
-                        <codemirror 
-                            ref="myCm" 
-                            class="codemirror-editor" 
-                            v-model="d_value"
-                            @ready="onReady"
-                            @cursorActivity="onCursorActivity"
-                            @beforeSelectionChange="onBeforeSelectionChange"
-                            @changes="onChanges"
-                            :options="cmOptions">
-                        </codemirror>
-                    </div>
-                </div>
-                
-                <div class="status-bar">
-                    <div class="status-info">      
-                        <div class="status-cursor">          
-                            <span class="status-line-column">第 {{statusBar.line}} 行，第 {{statusBar.column}} 栏</span>          
-                            <span class="status-selection" v-show="statusBar.select > 0"> — 已选择 {{statusBar.select}} 行</span>    
-                        </div>        
-                        <div class="status-file"> — 共 {{statusBar.count}} 行</div>   
-                    </div>
+  <!-- 编辑文章模式 -->
+  <div class="v-note-wrapper">
+    <template  v-if="mode === 'editor'">
+      <!--编辑展示区域-->
+      <div class="v-note-panel">
+          <!--编辑区-->
+          <!-- @scroll="$v_edit_scroll" -->
+          <div ref="vNoteEdit" class="v-note-edit divarea-wrapper"
+              :class="{
+                  'scroll-style': s_scrollStyle, 
+                  'scroll-style-border-radius': s_scrollStyle && !s_preview_switch && !s_html_code, 
+                  'single-edit': !s_preview_switch && !s_html_code, 
+                  'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code), 
+                  'transition': transition}"
+          >
+              <!--工具栏-->
+              <div class="v-note-op edit-toolbar" v-show="toolbarsFlag">
+                  <v-md-toolbar 
+                      ref="toolbar_left" 
+                      :transition="transition" 
+                      :d_words="d_words"
+                      @toolbar_left_click="toolbar_left_click"
+                      @toolbar_left_addlink="toolbar_left_addlink" 
+                      @toolbar_toggle_click="toolbar_toggle_click"
+                      @read_tags_display_mode="read_tags_mode_click"
+                      @imageMultipleUpload="imageMultipleUpload"
+                      :toolbars="toolbars"
+                      @imgDel="$imgDel" 
+                      @imgTouch="$imgTouch" 
+                      :image_filter="imageFilter"
+                      :imageUploadAction="imageUploadAction"
+                      :imageUploadFn="imageUploadFn"
+                      :encryption="encryption"
+                      >
+                      <slot name="left-toolbar-before" slot="left-toolbar-before" />
+                      <slot name="left-toolbar-after" slot="left-toolbar-after" />
+                  </v-md-toolbar>
+              </div>
+              <div class="edit-content">
+                  <div class="content-input-wrapper">
+                      <!-- 双栏 -->
+                      <!-- @scroll="$v_edit_scroll__left" -->
+                      <codemirror 
+                          ref="myCm" 
+                          class="codemirror-editor" 
+                          v-model="d_value"
+                          @ready="onReady"
+                          @cursorActivity="onCursorActivity"
+                          @beforeSelectionChange="onBeforeSelectionChange"
+                          @changes="onChanges"
+                          :options="cmOptions">
+                      </codemirror>
+                  </div>
+              </div>
+              
+              <div class="status-bar">
+                  <div class="status-info">      
+                      <div class="status-cursor">          
+                          <span class="status-line-column">第 {{statusBar.line}} 行，第 {{statusBar.column}} 栏</span>          
+                          <span class="status-selection" v-show="statusBar.select > 0"> — 已选择 {{statusBar.select}} 行</span>    
+                      </div>        
+                      <div class="status-file"> — 共 {{statusBar.count}} 行</div>   
+                  </div>
 
-                    <div class="status-other">
-                    <div class="help op-icon fa fa-mavon-question-circle" @click="toolbar_right_click('help')"></div>
-                    </div>
-                </div>
+                  <div class="status-other">
+                  <div class="help op-icon fa fa-mavon-question-circle" @click="toolbar_right_click('help')"></div>
+                  </div>
+              </div>
 
-                <div class="tool-mobile">
-                    <v-md-toolbar-mobile 
-                        :toolbars="toolbars"
-                        :imageUploadAction="imageUploadAction"
-                        :encryption="encryption"
-                        @imageMultipleUpload="imageMultipleUpload"
-                        @toolbar_click="toolbar_left_click"
-                        @toolbar_toggle_click="toolbar_toggle_click"
-                        @read_tags_display_mode="read_tags_mode_click"
-                        @tool-mobile-import="$emit('tool-mobile-import')"
-                        >
-                        <slot name="tool-mobile" />
-                    </v-md-toolbar-mobile>
-                </div>
-            </div>
-            <!--展示区-->
-            <div :class="{'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code)}"
-                v-show="s_preview_switch || s_html_code"
-                class="v-note-show">
-                <!-- @scroll="$v_edit_scroll__right" -->
-                <div 
-                    id="previewContent" 
-                    ref="vShowContent" 
-                    v-html="d_render"
-                    v-show="!s_html_code"
-                    :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" class="v-show-content markdown-body extmarkdown">
-                </div>
-                <!-- <div v-show="s_html_code" :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" class="v-show-content-html spoiler">{{d_render}}</div> -->
-                <div class="tool-view-mobile">
-                    <v-md-toolbar-view-mobile
-                        @read_tags_display_mode="read_tags_mode_click"
-                        @toolbar_toggle_click="toolbar_toggle_click"
-                    >
-                        <slot name="tool-view-mobile" />
-                    </v-md-toolbar-view-mobile>
-                </div>
-            </div>
+              <div class="tool-mobile">
+                  <v-md-toolbar-mobile 
+                      :toolbars="toolbars"
+                      :imageUploadAction="imageUploadAction"
+                      :encryption="encryption"
+                      @imageMultipleUpload="imageMultipleUpload"
+                      @toolbar_click="toolbar_left_click"
+                      @toolbar_toggle_click="toolbar_toggle_click"
+                      @read_tags_display_mode="read_tags_mode_click"
+                      @tool-mobile-import="$emit('tool-mobile-import')"
+                      >
+                      <slot name="tool-mobile" />
+                  </v-md-toolbar-mobile>
+              </div>
+          </div>
+          <!--展示区-->
+          <div :class="{'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code)}"
+              v-show="s_preview_switch || s_html_code"
+              class="v-note-show">
+              <!-- @scroll="$v_edit_scroll__right" -->
+              <div 
+                  id="previewContent" 
+                  ref="vShowContent" 
+                  v-html="d_render"
+                  v-show="!s_html_code"
+                  :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" 
+                  class="v-show-content markdown-body extmarkdown">
+              </div>
+              <!-- <div v-show="s_html_code" :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" class="v-show-content-html spoiler">{{d_render}}</div> -->
+              <div class="tool-view-mobile">
+                  <v-md-toolbar-view-mobile
+                      @read_tags_display_mode="read_tags_mode_click"
+                      @toolbar_toggle_click="toolbar_toggle_click"
+                  >
+                      <slot name="tool-view-mobile" />
+                  </v-md-toolbar-view-mobile>
+              </div>
+          </div>
 
-            <!--标题导航-->
-            <transition name="slideTop">
-                <div v-show="s_navigation" class="v-note-navigation-wrapper" :class="{'transition': transition}">
-                    <div class="v-note-navigation-title">
-                        {{d_words.navigation_title}}<i @click="toolbar_right_click('navigation')"
-                        class="fa fa-mavon-times v-note-navigation-close"
-                        aria-hidden="true"></i>
-                    </div>
-                    <div ref="navigationContent" class="v-note-navigation-content" :class="{'scroll-style': s_scrollStyle}">
-                    </div>
-                </div>
-            </transition>
+          <!--标题导航-->
+          <transition name="slideTop">
+              <div v-show="s_navigation" class="v-note-navigation-wrapper" :class="{'transition': transition}">
+                  <div class="v-note-navigation-title">
+                      {{d_words.navigation_title}}<i @click="toolbar_right_click('navigation')"
+                      class="fa fa-mavon-times v-note-navigation-close"
+                      aria-hidden="true"></i>
+                  </div>
+                  <div ref="navigationContent" class="v-note-navigation-content" :class="{'scroll-style': s_scrollStyle}">
+                  </div>
+              </div>
+          </transition>
 
-        </div>
-        <!--帮助文档-->
-        <transition name="fade">
-            <div ref="help">
-                <div class="v-note-help-wrapper" v-if="s_help">
-                    <div class="v-note-help-content markdown-body" :class="{'shadow': boxShadow}">
-                        <i @click.stop.prevent="toolbar_right_click('help')" class="fa fa-mavon-times"
-                        aria-hidden="true"></i>
-                        <div class="scroll-style v-note-help-show" v-html="d_help"></div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-        <!-- 预览图片 -->
-        <transition name="fade">
-            <div @click="d_preview_imgsrc=null" class="v-note-img-wrapper" v-if="d_preview_imgsrc">
-                <img :src="d_preview_imgsrc" alt="none">
-            </div>
-        </transition>
-        <!--阅读模式-->
-        <div :class="{'show': s_readmodel}" class="v-note-read-model scroll-style" ref="vReadModel">
-            <div ref="vNoteReadContent" class="v-note-read-content" v-html="d_render">
-            </div>
-        </div>
-    </div>
+      </div>
+      <!--帮助文档-->
+      <transition name="fade">
+          <div ref="help">
+              <div class="v-note-help-wrapper" v-if="s_help">
+                  <div class="v-note-help-content markdown-body" :class="{'shadow': boxShadow}">
+                      <i @click.stop.prevent="toolbar_right_click('help')" class="fa fa-mavon-times"
+                      aria-hidden="true"></i>
+                      <div class="scroll-style v-note-help-show" v-html="d_help"></div>
+                  </div>
+              </div>
+          </div>
+      </transition>
+      <!-- 预览图片 -->
+      <transition name="fade">
+          <div @click="d_preview_imgsrc=null" class="v-note-img-wrapper" v-if="d_preview_imgsrc">
+              <img :src="d_preview_imgsrc" alt="none">
+          </div>
+      </transition>
+      <!--阅读模式-->
+      <div :class="{'show': s_readmodel}" class="v-note-read-model scroll-style" ref="vReadModel">
+          <div ref="vNoteReadContent" class="v-note-read-content" v-html="d_render">
+          </div>
+      </div>
+    </template>
+    <!-- 文章预览模式 -->
+    <div v-if="mode === 'view'" v-html="d_render" class="v-show-content markdown-body extmarkdown" id="previewMarkdown"></div>
+  </div>
 </template>
 
 <script>
@@ -393,6 +399,11 @@ export default {
     encryption: {
       type: String,
       default: ''
+    },
+    // 模式
+    mode: {
+      type: String,
+      default: 'editor' // or view
     }
   },
   data() {
@@ -623,10 +634,6 @@ export default {
     this.$nextTick(() => {
       // 初始化Textarea编辑开关
       $vm.editableTextarea();
-
-      // setTimeout(() => {
-      //     window.codemirror = this.codemirror
-      // }, 2000)
     })
     if (this.placeholder) {
       this.cmOptions.placeholder = this.placeholder;
@@ -635,22 +642,26 @@ export default {
   },
   mounted() {
     var $vm = this;
-    this.$el.addEventListener('paste', function (e) {
-      $vm.$paste(e);
-    })
-    this.$el.addEventListener('drop', function (e) {
-      $vm.$drag(e);
-    })
-    // 浏览器siz大小
-    /* windowResize(this); */
-    keydownListen(this);
-    // 图片预览事件监听
-    ImagePreviewListener(this);
-    // fullscreen事件
-    fullscreenchange(this);
+    if (this.mode === 'editor') {
+      this.$el.addEventListener('paste', function (e) {
+        $vm.$paste(e);
+      })
+      this.$el.addEventListener('drop', function (e) {
+        $vm.$drag(e);
+      })
+      // 浏览器siz大小
+      /* windowResize(this); */
+      keydownListen(this);
+      // 图片预览事件监听
+      ImagePreviewListener(this);
+      // fullscreen事件
+      fullscreenchange(this);
+
+      // 将help添加到末尾
+      document.body.appendChild(this.$refs.help);
+    }
     this.d_value = this.value;
-    // 将help添加到末尾
-    document.body.appendChild(this.$refs.help);
+
     this.loadExternalLink('markdown_css', 'css');
     this.loadExternalLink('katex_css', 'css')
     this.loadExternalLink('katex_js', 'js', function() {
@@ -1354,6 +1365,16 @@ export default {
         return {result: '', srcArr: []}
       }
     },
+    // 渲染完成替换一些元素
+    finishViewContent() {
+      if (this.mode === 'editor') {
+        finishView($('#previewContent'))
+      } else if (this.mode === 'view') {
+        finishView($('#previewMarkdown'))
+      } else {
+        console.log('mode', this.mode)
+      }
+    },
     // 添加防抖 渲染内容
     iRender: debounce(function (toggleChange) {
       var $vm = this;
@@ -1364,7 +1385,7 @@ export default {
         $vm.d_render = result;
 
         $vm.$nextTick(() => {
-          finishView($('#previewContent'))
+          $vm.finishViewContent()
 
           clearTimeout($vm.timer)
           $vm.timer = setTimeout(() => {
@@ -1641,13 +1662,12 @@ export default {
     sans-serif;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
   .codemirror-editor /deep/ .CodeMirror {
     line-height: 22px;
     font-size: 16px;
   }
 }
-
 </style>
 
 <style lang="less">
@@ -1665,83 +1685,103 @@ export default {
     list-style: none;
     background-color: #fff;
     border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     *border-right-width: 2px;
     *border-bottom-width: 2px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
-    background-clip: padding-box
-}
+    background-clip: padding-box;
+  }
 
-.dropdown-menu.pull-right {
+  .dropdown-menu.pull-right {
     right: 0;
-    left: auto
-}
+    left: auto;
+  }
 
-.dropdown-menu .divider {
+  .dropdown-menu .divider {
     *width: 100%;
     height: 1px;
     margin: 9px 1px;
     *margin: -5px 0 5px;
     overflow: hidden;
     background-color: #e5e5e5;
-    border-bottom: 1px solid #fff
-}
+    border-bottom: 1px solid #fff;
+  }
 
-.dropdown-menu>li>a {
+  .dropdown-menu > li > a {
     display: block;
     padding: 3px 20px;
     clear: both;
     font-weight: normal;
     line-height: 20px;
     color: #333;
-    white-space: nowrap
-}
+    white-space: nowrap;
+  }
 
-.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-submenu:hover>a,.dropdown-submenu:focus>a {
+  .dropdown-menu > li > a:hover,
+  .dropdown-menu > li > a:focus,
+  .dropdown-submenu:hover > a,
+  .dropdown-submenu:focus > a {
     color: #fff;
     text-decoration: none;
     background-color: #0081c2;
-    background-image: -moz-linear-gradient(top,#08c,#0077b3);
-    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));
-    background-image: -webkit-linear-gradient(top,#08c,#0077b3);
-    background-image: -o-linear-gradient(top,#08c,#0077b3);
-    background-image: linear-gradient(to bottom,#08c,#0077b3);
+    background-image: -moz-linear-gradient(top, #08c, #0077b3);
+    background-image: -webkit-gradient(
+      linear,
+      0 0,
+      0 100%,
+      from(#08c),
+      to(#0077b3)
+    );
+    background-image: -webkit-linear-gradient(top, #08c, #0077b3);
+    background-image: -o-linear-gradient(top, #08c, #0077b3);
+    background-image: linear-gradient(to bottom, #08c, #0077b3);
     background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)
-}
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0);
+  }
 
-.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus {
+  .dropdown-menu > .active > a,
+  .dropdown-menu > .active > a:hover,
+  .dropdown-menu > .active > a:focus {
     color: #fff;
     text-decoration: none;
     background-color: #0081c2;
-    background-image: -moz-linear-gradient(top,#08c,#0077b3);
-    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#0077b3));
-    background-image: -webkit-linear-gradient(top,#08c,#0077b3);
-    background-image: -o-linear-gradient(top,#08c,#0077b3);
-    background-image: linear-gradient(to bottom,#08c,#0077b3);
+    background-image: -moz-linear-gradient(top, #08c, #0077b3);
+    background-image: -webkit-gradient(
+      linear,
+      0 0,
+      0 100%,
+      from(#08c),
+      to(#0077b3)
+    );
+    background-image: -webkit-linear-gradient(top, #08c, #0077b3);
+    background-image: -o-linear-gradient(top, #08c, #0077b3);
+    background-image: linear-gradient(to bottom, #08c, #0077b3);
     background-repeat: repeat-x;
     outline: 0;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0)
-}
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc',endColorstr='#ff0077b3',GradientType=0);
+  }
 
-.dropdown-menu>.disabled>a,.dropdown-menu>.disabled>a:hover,.dropdown-menu>.disabled>a:focus {
-    color: #999
-}
+  .dropdown-menu > .disabled > a,
+  .dropdown-menu > .disabled > a:hover,
+  .dropdown-menu > .disabled > a:focus {
+    color: #999;
+  }
 
-.dropdown-menu>.disabled>a:hover,.dropdown-menu>.disabled>a:focus {
+  .dropdown-menu > .disabled > a:hover,
+  .dropdown-menu > .disabled > a:focus {
     text-decoration: none;
     cursor: default;
     background-color: transparent;
     background-image: none;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
-}
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  }
 }
 </style>
 

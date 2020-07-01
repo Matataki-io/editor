@@ -27,6 +27,7 @@
         :imageUploadFn="imageUploadFn"
         :encryption="encryption"
         :placeholder="placeholder"
+        mode="view"
       >
         <template slot="tool-mobile">
           <button>内容</button>
@@ -138,13 +139,6 @@ export default {
     })
   },
   mounted() {
-    var md = this.$refs.md;
-    var toolbar_left = md.$refs.toolbar_left;
-    var diy = this.$refs.diy;
-    toolbar_left.$el.append(diy)
-    // toolbar_left.$el.append(diy.$el)
-    // console.log(toolbar_left)
-
     const clientHeight = document.body.clientHeight || document.documentElement.clientHeight
     // document.querySelector('.item-editor').style.height = clientHeight - 60 + 'px'
     document.querySelector('.item-editor').style.height = clientHeight + 'px'
