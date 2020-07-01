@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!-- <div style="height: 60px;"></div> -->
+        <!-- :externalLink="external_link" -->
       <mavon-editor
         ref="md"
         :subfield="subfield"
@@ -14,7 +15,6 @@
         v-model="help1"
         :autofocus="autofocus"
         :shortCut="true"
-        :externalLink="external_link"
         @imgAdd="$imgAdd"
         @imgDel="$imgDel"
         @subfieldtoggle="$subfieldtoggle"
@@ -27,7 +27,6 @@
         :imageUploadFn="imageUploadFn"
         :encryption="encryption"
         :placeholder="placeholder"
-        mode="view"
       >
         <template slot="tool-mobile">
           <button>内容</button>
@@ -44,7 +43,7 @@
 // import {CONFIG} from './assets/config.js'
 import {CONFIG} from '../lib/config.js'
 import axios from 'axios'
-import {mavonEditor} from '../index'
+import { mavonEditor } from '../index'
 import { uploadImage } from '../lib/image_upload'
 export default {
   name: 'app',

@@ -641,6 +641,12 @@ export default {
     this.setEditorMode()
   },
   mounted() {
+    try {
+      window && (window.finishView = finishView)
+    } catch (e) {
+      console.log(e)
+    }
+
     var $vm = this;
     if (this.mode === 'editor') {
       this.$el.addEventListener('paste', function (e) {
@@ -677,7 +683,10 @@ export default {
     }
   },
   beforeDestroy() {
-    document.body.removeChild(this.$refs.help);
+    let help = this.$refs.help
+    if (help) {
+      document.body.removeChild(this.$refs.help);
+    }
   },
   getMarkdownIt() {
     return this.mixins[0].data().markdownIt

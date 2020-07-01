@@ -22917,7 +22917,11 @@ var isMac = true;
     encryption: {
       type: String,
       default: ''
-    }
+    },
+
+    mode: {
+      type: String,
+      default: 'editor' }
   },
   data: function data() {
     var _this = this;
@@ -23141,22 +23145,31 @@ var isMac = true;
     this.setEditorMode();
   },
   mounted: function mounted() {
+    try {
+      window && (window.finishView = __WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */]);
+    } catch (e) {
+      console.log(e);
+    }
+
     var $vm = this;
-    this.$el.addEventListener('paste', function (e) {
-      $vm.$paste(e);
-    });
-    this.$el.addEventListener('drop', function (e) {
-      $vm.$drag(e);
-    });
+    if (this.mode === 'editor') {
+      this.$el.addEventListener('paste', function (e) {
+        $vm.$paste(e);
+      });
+      this.$el.addEventListener('drop', function (e) {
+        $vm.$drag(e);
+      });
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib_core_keydown_listen_js__["a" /* keydownListen */])(this);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib_core_keydown_listen_js__["a" /* keydownListen */])(this);
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["a" /* ImagePreviewListener */])(this);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["a" /* ImagePreviewListener */])(this);
 
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["b" /* fullscreenchange */])(this);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["b" /* fullscreenchange */])(this);
+
+      document.body.appendChild(this.$refs.help);
+    }
     this.d_value = this.value;
 
-    document.body.appendChild(this.$refs.help);
     this.loadExternalLink('markdown_css', 'css');
     this.loadExternalLink('katex_css', 'css');
     this.loadExternalLink('katex_js', 'js', function () {
@@ -23171,7 +23184,10 @@ var isMac = true;
     }
   },
   beforeDestroy: function beforeDestroy() {
-    document.body.removeChild(this.$refs.help);
+    var help = this.$refs.help;
+    if (help) {
+      document.body.removeChild(this.$refs.help);
+    }
   },
   getMarkdownIt: function getMarkdownIt() {
     return this.mixins[0].data().markdownIt;
@@ -23871,6 +23887,15 @@ var isMac = true;
         return { result: '', srcArr: [] };
       }
     },
+    finishViewContent: function finishViewContent() {
+      if (this.mode === 'editor') {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])($('#previewContent'));
+      } else if (this.mode === 'view') {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])($('#previewMarkdown'));
+      } else {
+        console.log('mode', this.mode);
+      }
+    },
 
     iRender: __WEBPACK_IMPORTED_MODULE_60_lodash_debounce___default()(function (toggleChange) {
       var $vm = this;
@@ -23882,7 +23907,7 @@ var isMac = true;
         $vm.d_render = result;
 
         $vm.$nextTick(function () {
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])($('#previewContent'));
+          $vm.finishViewContent();
 
           clearTimeout($vm.timer);
           $vm.timer = setTimeout(function () {
@@ -31043,7 +31068,7 @@ exports = module.exports = __webpack_require__(6)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
 
 // exports
 
@@ -31071,7 +31096,7 @@ exports = module.exports = __webpack_require__(6)(undefined);
 
 
 // module
-exports.push([module.i, "\n.auto-textarea-wrapper[data-v-69290688] {\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] {\n  width: 100%;\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] .CodeMirror {\n  letter-spacing: 0.025em;\n  line-height: 1.25;\n  font-size: 18px;\n  height: 100%;\n  overflow-y: hidden !important;\n  -webkit-overflow-scrolling: touch;\n  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,\n    Segoe UI, Arial, Roboto, PingFang SC, Hiragino Sans GB, Microsoft Yahei,\n    sans-serif;\n}\n@media screen and (max-width: 768px){\n.codemirror-editor[data-v-69290688] .CodeMirror {\n    line-height: 22px;\n    font-size: 16px;\n}\n}\n\n", ""]);
+exports.push([module.i, "\n.auto-textarea-wrapper[data-v-69290688] {\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] {\n  width: 100%;\n  height: 100%;\n}\n.codemirror-editor[data-v-69290688] .CodeMirror {\n  letter-spacing: 0.025em;\n  line-height: 1.25;\n  font-size: 18px;\n  height: 100%;\n  overflow-y: hidden !important;\n  -webkit-overflow-scrolling: touch;\n  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,\n    Segoe UI, Arial, Roboto, PingFang SC, Hiragino Sans GB, Microsoft Yahei,\n    sans-serif;\n}\n@media screen and (max-width: 768px) {\n.codemirror-editor[data-v-69290688] .CodeMirror {\n    line-height: 22px;\n    font-size: 16px;\n}\n}\n", ""]);
 
 // exports
 
@@ -94342,7 +94367,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "v-note-wrapper"
-  }, [_c('div', {
+  }, [(_vm.mode === 'editor') ? [_c('div', {
     staticClass: "v-note-panel"
   }, [_c('div', {
     ref: "vNoteEdit",
@@ -94580,7 +94605,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "innerHTML": _vm._s(_vm.d_render)
     }
-  })])], 1)
+  })])] : _vm._e(), _vm._v(" "), (_vm.mode === 'view') ? _c('div', {
+    staticClass: "v-show-content markdown-body extmarkdown",
+    attrs: {
+      "id": "previewMarkdown"
+    },
+    domProps: {
+      "innerHTML": _vm._s(_vm.d_render)
+    }
+  }) : _vm._e()], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
