@@ -1,7 +1,6 @@
 <template>
   <!-- 编辑文章模式 -->
   <div class="v-note-wrapper">
-    <template  v-if="mode === 'editor'">
       <!--编辑展示区域-->
       <div class="v-note-panel">
           <!--编辑区-->
@@ -144,9 +143,8 @@
           <div ref="vNoteReadContent" class="v-note-read-content" v-html="d_render">
           </div>
       </div>
-    </template>
     <!-- 文章预览模式 -->
-    <div v-if="mode === 'view'" v-html="d_render" class="v-show-content markdown-body extmarkdown" id="previewMarkdown"></div>
+    <!-- <div v-if="mode === 'view'" v-html="d_render" class="v-show-content markdown-body extmarkdown" id="previewMarkdown"></div> -->
   </div>
 </template>
 
@@ -641,13 +639,20 @@ export default {
     this.setEditorMode()
   },
   mounted() {
+    var $vm = this;
+
     try {
       window && (window.finishView = finishView)
+
+      if (window) {
+        window.onload = () => {
+          $vm.iRender(true);
+        }
+      }
     } catch (e) {
       console.log(e)
     }
 
-    var $vm = this;
     if (this.mode === 'editor') {
       this.$el.addEventListener('paste', function (e) {
         $vm.$paste(e);
