@@ -84,13 +84,14 @@
           </div>
           <!--展示区-->
           <div :class="{'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code)}"
-              v-if="s_preview_switch"
+              v-show="s_preview_switch"
               class="v-note-show">
               <!-- @scroll="$v_edit_scroll__right" -->
               <div 
                   id="previewContent" 
                   ref="vShowContent" 
                   v-html="d_render"
+                  v-if="!s_html_code"
                   :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" 
                   class="v-show-content markdown-body extmarkdown">
               </div>
