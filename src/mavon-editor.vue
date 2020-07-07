@@ -641,6 +641,7 @@ export default {
 
       if (window) {
         window.onload = () => {
+          $vm.autoSyncscroll()
           $vm.iRender(true);
         }
       }
