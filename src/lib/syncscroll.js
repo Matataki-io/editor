@@ -2,6 +2,7 @@
 
 import markdownitContainer from 'markdown-it-container'
 import _ from 'lodash'
+import $ from 'jquery'
 
 // Inject line numbers for sync scroll.
 export function injectLineNumber(md) {

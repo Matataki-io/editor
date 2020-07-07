@@ -14182,7 +14182,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return md; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return md; });
 /* harmony export (immutable) */ __webpack_exports__["a"] = finishView;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_json_stringify__);
@@ -14200,6 +14200,9 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_validator_lib_isURL___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_validator_lib_isURL__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_markdown_it_regexp__ = __webpack_require__(452);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_markdown_it_regexp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_markdown_it_regexp__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_jquery__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_jquery__);
+
 
 
 
@@ -14313,7 +14316,7 @@ var md = __webpack_require__(459)({
 var pdfPlugin = new __WEBPACK_IMPORTED_MODULE_7_markdown_it_regexp___default.a(/{%pdf\s*([\d\D]*?)\s*%}/, function (match, utils) {
   var pdfurl = match[1];
   if (!__WEBPACK_IMPORTED_MODULE_6_validator_lib_isURL___default()(pdfurl)) return match[0];
-  var div = $('<div class="pdf raw"></div>');
+  var div = __WEBPACK_IMPORTED_MODULE_8_jquery___default()('<div class="pdf raw"></div>');
   div.attr('data-pdfurl', pdfurl);
   return div[0].outerHTML;
 });
@@ -14343,30 +14346,30 @@ function finishView(view) {
   var blockquote = view.find('blockquote.raw').removeClass('raw');
   var blockquoteP = blockquote.find('p');
   blockquoteP.each(function (key, value) {
-    var html = $(value).html();
+    var html = __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value).html();
     html = replaceExtraTags(html);
-    $(value).html(html);
+    __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value).html(html);
   });
 
   var blockquoteColor = blockquote.find('.color');
   blockquoteColor.each(function (key, value) {
-    $(value).closest('blockquote').css('border-left-color', $(value).attr('data-color'));
+    __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value).closest('blockquote').css('border-left-color', __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value).attr('data-color'));
   });
 
   view.find('div.pdf.raw').removeClass('raw').each(function (key, value) {
-    var url = $(value).attr('data-pdfurl');
+    var url = __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value).attr('data-pdfurl');
 
-    var inner = $('<div></div>');
+    var inner = __WEBPACK_IMPORTED_MODULE_8_jquery___default()('<div></div>');
     var pdfDiv = document.createElement('div');
 
-    $(this).append(pdfDiv);
+    __WEBPACK_IMPORTED_MODULE_8_jquery___default()(this).append(pdfDiv);
     __WEBPACK_IMPORTED_MODULE_5_pdfobject___default.a.embed(url, pdfDiv, {
       height: '400px'
     });
   });
 
   view.find('code.raw').removeClass('raw').each(function (key, value) {
-    var langDiv = $(value);
+    var langDiv = __WEBPACK_IMPORTED_MODULE_8_jquery___default()(value);
     if (langDiv.length > 0) {
       var reallang = langDiv[0].className.replace(/hljs|wrap/g, '').trim();
       var codeDiv = langDiv.find('.code');
@@ -14405,7 +14408,6 @@ function finishView(view) {
     }
   });
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
 /* 67 */
@@ -14441,7 +14443,7 @@ var uploadImage = function uploadImage(imgFile, url, token) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["d"] = injectLineNumber;
+/* harmony export (immutable) */ __webpack_exports__["d"] = injectLineNumber;
 /* harmony export (immutable) */ __webpack_exports__["a"] = setupSyncAreas;
 /* harmony export (immutable) */ __webpack_exports__["b"] = clearMap;
 /* unused harmony export syncScrollToEdit */
@@ -14450,6 +14452,9 @@ var uploadImage = function uploadImage(imgFile, url, token) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_markdown_it_container___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_markdown_it_container__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(433);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery__);
+
 
 
 
@@ -14688,7 +14693,7 @@ function buildMapInner(callback) {
   var parts = markdownArea.find('.part').toArray();
 
   for (i = 0; i < parts.length; i++) {
-    var $el = $(parts[i]);
+    var $el = __WEBPACK_IMPORTED_MODULE_2_jquery___default()(parts[i]);
     var t = $el.attr('data-startline') - 1;
     if (t === '') {
       return;
@@ -14873,7 +14878,6 @@ function syncScrollToView(event, preventAnimate) {
 function editScrollingTimeoutInner() {
   editScrolling = false;
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
 /* 69 */
@@ -22582,7 +22586,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_regenerator__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_regenerator__);
@@ -22695,7 +22699,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_61_lodash_throttle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_61_lodash_throttle__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_62_animejs_lib_anime_es_js__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__lib_extra_js__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__lib_syncscroll__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64_jquery__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_64_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__lib_syncscroll__ = __webpack_require__(68);
+
 
 
 
@@ -22917,11 +22924,7 @@ var isMac = true;
     encryption: {
       type: String,
       default: ''
-    },
-
-    mode: {
-      type: String,
-      default: 'editor' }
+    }
   },
   data: function data() {
     var _this = this;
@@ -23159,22 +23162,20 @@ var isMac = true;
       console.log(e);
     }
 
-    if (this.mode === 'editor') {
-      this.$el.addEventListener('paste', function (e) {
-        $vm.$paste(e);
-      });
-      this.$el.addEventListener('drop', function (e) {
-        $vm.$drag(e);
-      });
+    this.$el.addEventListener('paste', function (e) {
+      $vm.$paste(e);
+    });
+    this.$el.addEventListener('drop', function (e) {
+      $vm.$drag(e);
+    });
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib_core_keydown_listen_js__["a" /* keydownListen */])(this);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib_core_keydown_listen_js__["a" /* keydownListen */])(this);
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["a" /* ImagePreviewListener */])(this);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["a" /* ImagePreviewListener */])(this);
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["b" /* fullscreenchange */])(this);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_40__lib_core_extra_function_js__["b" /* fullscreenchange */])(this);
 
-      document.body.appendChild(this.$refs.help);
-    }
+    document.body.appendChild(this.$refs.help);
     this.d_value = this.value;
 
     this.loadExternalLink('markdown_css', 'css');
@@ -23749,10 +23750,10 @@ var isMac = true;
       cycle();
     },
     autoSyncscroll: function autoSyncscroll() {
-      var getInput = $('.CodeMirror-scroll');
-      var getPreview = $('#previewContent');
+      var getInput = __WEBPACK_IMPORTED_MODULE_64_jquery___default()('.CodeMirror-scroll');
+      var getPreview = __WEBPACK_IMPORTED_MODULE_64_jquery___default()('#previewContent');
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_64__lib_syncscroll__["a" /* setupSyncAreas */])(getInput, getPreview, getPreview, this.codemirror);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_65__lib_syncscroll__["a" /* setupSyncAreas */])(getInput, getPreview, getPreview, this.codemirror);
     },
     insertText: function insertText(obj, _ref) {
       var prefix = _ref.prefix,
@@ -23895,13 +23896,7 @@ var isMac = true;
       }
     },
     finishViewContent: function finishViewContent() {
-      if (this.mode === 'editor') {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])($('#previewContent'));
-      } else if (this.mode === 'view') {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])($('#previewMarkdown'));
-      } else {
-        console.log('mode', this.mode);
-      }
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_63__lib_extra_js__["a" /* finishView */])(__WEBPACK_IMPORTED_MODULE_64_jquery___default()('#previewContent'));
     },
 
     iRender: __WEBPACK_IMPORTED_MODULE_60_lodash_debounce___default()(function (toggleChange) {
@@ -24069,8 +24064,8 @@ var isMac = true;
 
       clearTimeout(this.editorChangeTimer);
       this.editorChangeTimer = setTimeout(function () {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_64__lib_syncscroll__["b" /* clearMap */])();
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_64__lib_syncscroll__["c" /* syncScrollToView */])();
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_65__lib_syncscroll__["b" /* clearMap */])();
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_65__lib_syncscroll__["c" /* syncScrollToView */])();
       }, 1000);
     },
     onReady: function onReady(cm) {
@@ -24133,7 +24128,6 @@ var isMac = true;
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
 /* 138 */
@@ -24991,9 +24985,12 @@ function attrMines(val) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["a"] = textcomplete;
+/* harmony export (immutable) */ __webpack_exports__["a"] = textcomplete;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_highlight_js__ = __webpack_require__(92);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_highlight_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_highlight_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
+
 
 
 var supportCodeModes = ['javascript', 'typescript', 'jsx', 'htmlmixed', 'htmlembedded', 'css', 'xml', 'clike', 'clojure', 'ruby', 'python', 'shell', 'php', 'sql', 'haskell', 'coffeescript', 'yaml', 'pug', 'lua', 'cmake', 'nginx', 'perl', 'sass', 'r', 'dockerfile', 'tiddlywiki', 'mediawiki', 'go', 'gherkin'].concat(__WEBPACK_IMPORTED_MODULE_0_highlight_js___default.a.listLanguages());
@@ -25001,18 +24998,18 @@ var supportCharts = ['sequence', 'flow', 'graphviz', 'mermaid', 'abc', 'plantuml
 
 function textcomplete(editor) {
   return;
-  $(editor.getInputField()).textcomplete([{
+  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(editor.getInputField()).textcomplete([{
     match: /(^|\n|\s)\B:([-+\w]*)$/,
     search: function search(term, callback) {
       var line = editor.getLine(editor.getCursor().line);
       term = line.match(this.match)[2];
       var list = [];
-      $.map(window.emojify.emojiNames, function (emoji) {
+      __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.map(window.emojify.emojiNames, function (emoji) {
         if (emoji.indexOf(term) === 0) {
           list.push(emoji);
         }
       });
-      $.map(window.emojify.emojiNames, function (emoji) {
+      __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.map(window.emojify.emojiNames, function (emoji) {
         if (emoji.indexOf(term) !== -1) {
           list.push(emoji);
         }
@@ -25031,7 +25028,6 @@ function textcomplete(editor) {
     }
   }]);
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(23)))
 
 /***/ }),
 /* 145 */
@@ -31075,7 +31071,7 @@ exports = module.exports = __webpack_require__(6)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* 折叠 */\n.CodeMirror-foldmarker {\n  color: #d0d0d0;\n  text-shadow: none;\n  font-family: Arial;\n  font-size: 1em;\n  line-height: 0.3;\n  cursor: pointer;\n  margin: 2px;\n  padding-bottom: 2px;\n}\n.CodeMirror-foldgutter {\n  /*width: 1em;*/\n  cursor: default;\n  line-height: 100%;\n}\n.CodeMirror-foldgutter-open,\n.CodeMirror-foldgutter-folded {\n  line-height: 1em;\n  cursor: pointer;\n}\n.CodeMirror-foldgutter-open {\n  padding-top: 1px;\n}\n.CodeMirror-foldgutter-folded {\n  padding-top: 2px;\n}\n.CodeMirror-foldgutter-open:after {\n  content: \"\\2335\";\n  font-size: 1em;\n  /*    opacity: 0.5;*/\n}\n.CodeMirror-foldgutter-folded:after {\n  content: \"+\";\n  font-size: 1em;\n  font-weight: 700;\n}\n.CodeMirror-foldmarker,\n.CodeMirror-foldgutter-folded:after {\n  color: #78b2f2 !important;\n}\n/* 滚动条隐藏 */\n.CodeMirror-scroll {\n  overflow-x: hidden !important;\n  overflow-y: auto !important;\n}\n.CodeMirror-placeholder {\n  color: #777 !important;\n}\n.CodeMirror-hints {\n  z-index: 99999;\n}\n", ""]);
 
 // exports
 
@@ -94485,24 +94481,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$emit('tool-mobile-import')
       }
     }
-  }, [_vm._t("tool-mobile")], 2)], 1)]), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.s_preview_switch || _vm.s_html_code),
-      expression: "s_preview_switch || s_html_code"
-    }],
+  }, [_vm._t("tool-mobile")], 2)], 1)]), _vm._v(" "), (_vm.s_preview_switch) ? _c('div', {
     staticClass: "v-note-show",
     class: {
       'single-show': (!_vm.s_subfield && _vm.s_preview_switch) || (!_vm.s_subfield && _vm.s_html_code)
     }
   }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.s_html_code),
-      expression: "!s_html_code"
-    }],
     ref: "vShowContent",
     staticClass: "v-show-content markdown-body extmarkdown",
     class: {
@@ -94521,7 +94505,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "read_tags_display_mode": _vm.read_tags_mode_click,
       "toolbar_toggle_click": _vm.toolbar_toggle_click
     }
-  }, [_vm._t("tool-view-mobile")], 2)], 1)]), _vm._v(" "), _c('transition', {
+  }, [_vm._t("tool-view-mobile")], 2)], 1)]) : _vm._e(), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "slideTop"
     }

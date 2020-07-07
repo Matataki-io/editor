@@ -84,14 +84,13 @@
           </div>
           <!--展示区-->
           <div :class="{'single-show': (!s_subfield && s_preview_switch) || (!s_subfield && s_html_code)}"
-              v-show="s_preview_switch || s_html_code"
+              v-if="s_preview_switch"
               class="v-note-show">
               <!-- @scroll="$v_edit_scroll__right" -->
               <div 
                   id="previewContent" 
                   ref="vShowContent" 
                   v-html="d_render"
-                  v-show="!s_html_code"
                   :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" 
                   class="v-show-content markdown-body extmarkdown">
               </div>
@@ -144,7 +143,6 @@
           </div>
       </div>
     <!-- 文章预览模式 -->
-    <!-- <div v-if="mode === 'view'" v-html="d_render" class="v-show-content markdown-body extmarkdown" id="previewMarkdown"></div> -->
   </div>
 </template>
 
@@ -254,6 +252,7 @@ import anime from 'animejs/lib/anime.es.js';
 
 // import { emojifyImageDir } from './lib/editor/constants'
 import { finishView } from './lib/extra.js'
+import $ from 'jquery'
 
 import {
   clearMap,
@@ -397,11 +396,6 @@ export default {
     encryption: {
       type: String,
       default: ''
-    },
-    // 模式
-    mode: {
-      type: String,
-      default: 'editor' // or view
     }
   },
   data() {
@@ -653,24 +647,22 @@ export default {
       console.log(e)
     }
 
-    if (this.mode === 'editor') {
-      this.$el.addEventListener('paste', function (e) {
-        $vm.$paste(e);
-      })
-      this.$el.addEventListener('drop', function (e) {
-        $vm.$drag(e);
-      })
-      // 浏览器siz大小
-      /* windowResize(this); */
-      keydownListen(this);
-      // 图片预览事件监听
-      ImagePreviewListener(this);
-      // fullscreen事件
-      fullscreenchange(this);
+    this.$el.addEventListener('paste', function (e) {
+      $vm.$paste(e);
+    })
+    this.$el.addEventListener('drop', function (e) {
+      $vm.$drag(e);
+    })
+    // 浏览器siz大小
+    /* windowResize(this); */
+    keydownListen(this);
+    // 图片预览事件监听
+    ImagePreviewListener(this);
+    // fullscreen事件
+    fullscreenchange(this);
 
-      // 将help添加到末尾
-      document.body.appendChild(this.$refs.help);
-    }
+    // 将help添加到末尾
+    document.body.appendChild(this.$refs.help);
     this.d_value = this.value;
 
     this.loadExternalLink('markdown_css', 'css');
@@ -1381,13 +1373,7 @@ export default {
     },
     // 渲染完成替换一些元素
     finishViewContent() {
-      if (this.mode === 'editor') {
-        finishView($('#previewContent'))
-      } else if (this.mode === 'view') {
-        finishView($('#previewMarkdown'))
-      } else {
-        console.log('mode', this.mode)
-      }
+      finishView($('#previewContent'))
     },
     // 添加防抖 渲染内容
     iRender: debounce(function (toggleChange) {
