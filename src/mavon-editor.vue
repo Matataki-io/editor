@@ -91,7 +91,7 @@
                   id="previewContent" 
                   ref="vShowContent" 
                   v-html="d_render"
-                  v-if="!s_html_code"
+                  v-show="!s_html_code"
                   :class="{'scroll-style': s_scrollStyle, 'scroll-style-border-radius': s_scrollStyle}" 
                   class="v-show-content markdown-body extmarkdown">
               </div>

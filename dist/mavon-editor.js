@@ -94492,7 +94492,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: {
       'single-show': (!_vm.s_subfield && _vm.s_preview_switch) || (!_vm.s_subfield && _vm.s_html_code)
     }
-  }, [(!_vm.s_html_code) ? _c('div', {
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.s_html_code),
+      expression: "!s_html_code"
+    }],
     ref: "vShowContent",
     staticClass: "v-show-content markdown-body extmarkdown",
     class: {
@@ -94504,7 +94510,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "innerHTML": _vm._s(_vm.d_render)
     }
-  }) : _vm._e(), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "tool-view-mobile"
   }, [_c('v-md-toolbar-view-mobile', {
     on: {
