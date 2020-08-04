@@ -22037,9 +22037,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (itemNodes[itemNodes.length - 1].textContent === 'undefined') {
           itemNodes[itemNodes.length - 1].remove();
         }
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     });
   },
 
@@ -22385,9 +22383,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (itemNodes[itemNodes.length - 1].textContent === 'undefined') {
           itemNodes[itemNodes.length - 1].remove();
         }
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     });
   },
 
