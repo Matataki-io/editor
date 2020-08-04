@@ -176,7 +176,7 @@ export default {
           itemNodes[itemNodes.length - 1].remove()
         }
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     })
   },
