@@ -553,9 +553,9 @@ export default {
           return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/' + lang + '.min.js';
         },
         hljs_css: function(css) {
-          if (hljsCss[css]) {
-            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css';
-          }
+          // if (hljsCss[css]) {
+            // return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css';
+          // }
           return '';
         },
         katex_js: function() {
@@ -830,9 +830,6 @@ export default {
     // files array
     async imageMultipleUpload(files) {
       if (!files || !files.length) return;
-      if (files.length > 5) {
-        return alert('一次最多上传五张图片')
-      }
 
       // 替换元素的内容
       let replacementsArray = []

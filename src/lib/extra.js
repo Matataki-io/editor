@@ -1,4 +1,5 @@
 // import hljs from 'highlight.js'
+import hljsDefineSolidity from 'highlightjs-solidity';
 import unescapeHTML from 'lodash/unescape'
 import Prism from 'prismjs'
 import escapeHTML from 'lodash/escape'
@@ -11,6 +12,8 @@ import $ from 'jquery'
 // let viz = new Viz()
 
 var hljs = require('highlight.js');
+
+hljsDefineSolidity(hljs);
 
 function highlightRender (code, lang) {
   if (!lang || /no(-?)highlight|plain|text/.test(lang)) { return }

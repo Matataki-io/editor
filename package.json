@@ -36,6 +36,7 @@
     "flowchart.js": "1.13.0",
     "highlight.js": "^9.11.0",
     "highlight.js-async-webpack": "^1.0.4",
+    "highlightjs-solidity": "1.0.18",
     "jquery": "3.5.1",
     "markdown-it-regexp": "0.4.0",
     "pdfobject": "2.1.1",
